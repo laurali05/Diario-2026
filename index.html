@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Diario 2026</title>
+    <link rel="stylesheet" href="estilos.css">
+
+</head>
+
+<header class="banner-rosa">
+    <h1 class="titulo-romantico">Nuestro rincón especial</h1>
+</header>
+
+<body>
+
+    <div id="pantalla-login">
+        <div class="caja-login">
+            <h2>🔒 Área Privada</h2>
+            <p>Introduce nuestra fecha especial (DD/MM/AA)</p>
+            <input type="password" id="password" placeholder="Escribe aquí...">
+            <button onclick="validarAcceso()">Entrar</button>
+            <p id="mensaje-error" style="color: red; display: none;"> Inténtalo de nuevo.</p>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <button onclick="verSeccion('inicio')">🏠 Inicio</button>
+        <button onclick="verSeccion('cartas')">✉️ Cartas</button>
+        <button onclick="verSeccion('imagenes')">🖼️ Imágenes</button>
+    </nav>
+
+    <section id="inicio" class="pantalla">
+        <div class="bienvenida">
+            <p class="frase-intro">Un pequeño detalle para cada día de este año.</p>
+
+            <div class="grid-inicio">
+
+                <div class="bloque-foto">
+                    <a href="javascript:void(0)" onclick="verSeccion('imagenes')" class=" enlace-foto">
+                        <img src="C:\Users\lopei\Documents\MiDiarioWeb\imagenes\nosotros.jpeg" alt="Nosotros"
+                            class="foto-inicio">
+                    </a>
+                    <p class="pie-foto">Los días más especiales del año para ti</p>
+                </div>
+
+                <div class="bloque-info">
+                    <div class="caja-buscador">
+                        <span>🔍</span>
+                        <input type="number" id="input-busqueda" placeholder="Ir al día...">
+                        <button onclick="buscarCarta()">Ir</button>
+                    </div>
+
+                    <div class="mensaje-decorativo">
+                        <span class="corazon-latido">❤️</span>
+                        <p>Para poder seguir dibujando constelaciones por siempre.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="cartas" class="pantalla" style="display:none;">
+        <h2>Índice de Cartas</h2>
+        <div id="contenedor-lineas">
+        </div>
+    </section>
+
+    <section id="lectura" class="pantalla" style="display:none;">
+        <button onclick="verSeccion('cartas')" class="btn-volver">← Volver al índice</button>
+
+        <article class="pergamino">
+            <h3 id="titulo-carta">Carta #X</h3>
+            <p id="texto-carta">Aquí irá el mensaje...</p>
+        </article>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
