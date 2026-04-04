@@ -14,7 +14,7 @@ function validarAcceso() {
 }
 
 // Al cargar la página, comprobamos si ya había entrado antes
-window.onload = function() {
+window.onload = function () {
     if (sessionStorage.getItem("acceso") === "concedido") {
         document.getElementById("pantalla-login").style.display = "none";
     }
@@ -32,15 +32,15 @@ function verSeccion(id) {
 // 2. Generar las líneas de cartas automáticamente
 function generarIndice() {
     const contenedor = document.getElementById('contenedor-lineas');
-    contenedor.innerHTML = ""; 
+    contenedor.innerHTML = "";
 
     // Aquí pondremos el día real más adelante
-    const hoy = 15; 
-    const totalDeCartas = 30; // Puedes poner 365 si quieres verlas todas
+    const hoy = calcularDiaActual();
+    const totalDeCartas = 365; // Puedes poner 365 si quieres verlas todas
 
     for (let i = 1; i <= totalDeCartas; i++) {
         const linea = document.createElement('div');
-        
+
         if (i <= hoy) {
             // DISEÑO DESBLOQUEADO
             linea.className = 'linea-carta desbloqueada';
@@ -48,7 +48,7 @@ function generarIndice() {
                 <span class="icon-estado">💌</span>
                 <strong>Carta ${i}</strong>
             `;
-            linea.onclick = function() {
+            linea.onclick = function () {
                 mostrarCarta(i);
                 verSeccion('lectura');
             };
@@ -61,30 +61,40 @@ function generarIndice() {
             `;
             // Al ser bloqueada, no le asignamos función de click
         }
-        
+
         contenedor.appendChild(linea);
     }
 }
 
-function mostrarCarta(id) {
-    // 1. Buscamos el título y el párrafo en el HTML
+async function mostrarCarta(id) {
     const titulo = document.getElementById('titulo-carta');
     const texto = document.getElementById('texto-carta');
 
-    // 2. Ponemos el título dinámico
     titulo.innerText = "Carta " + id;
+    texto.innerText = "Abriendo el sobre... 💌";
 
-    // 3. Simulamos el contenido (Temporalmente)
-    // Cuando lo subas a internet, cambiaremos esto por una lectura de archivos .txt
-    const mensajesDePrueba = {
-        1: "Este es el mensaje de la primera carta. ¡Qué ilusión que funcione!",
-        2: "Hoy es el segundo día... Cada vez te quiero más.",
-        15: "¡Has llegado a la carta 15! Eres el mejor."
-    };
-
-    // Si no tenemos texto para ese número, ponemos uno por defecto
-    texto.innerText = mensajesDePrueba[id] || "Contenido de la carta " + id + ": Aquí irá el texto que escribiste en tu archivo .txt original.";
+    try {
+        // Esto busca el archivo 1.txt, 2.txt, etc., en tu carpeta de GitHub
+        const respuesta = await fetch(`cartas/${id}.txt`);
+        if (!respuesta.ok) throw new Error();
+        const contenido = await respuesta.text();
+        texto.innerText = contenido;
+    } catch (error) {
+        texto.innerText = "Hubo un problemilla al abrir esta carta, pero mi amor por ti sigue intacto. ❤️";
+    }
 }
 
+function calcularDiaActual() {
+    const fechaInicio = new Date('2026-08-03'); // Pon aquí la fecha en que empieza el diario
+    const hoy = new Date();
+
+    // Calculamos la diferencia en milisegundos
+    const diferencia = hoy - fechaInicio;
+
+    // Convertimos a días (milisegundos / 1000s / 60m / 60h / 24d)
+    const diaActual = Math.floor(diferencia / (1000 * 60 * 60 * 24)) + 1;
+
+    return diaActual > 0 ? diaActual : 0; // Si aún no ha empezado, devuelve 0
+}
 // Ejecutar al cargar la web
 window.onload = generarIndice;
