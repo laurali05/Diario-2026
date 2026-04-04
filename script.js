@@ -1,98 +1,88 @@
+// 1. VALIDAR ACCESO
 function validarAcceso() {
-    const claveCorrecta = "030822"; // CAMBIA ESTO POR TU CLAVE
+    const claveCorrecta = "030822"; 
     const claveIntroducida = document.getElementById("password").value;
 
     if (claveIntroducida === claveCorrecta) {
-        // Si es correcta, ocultamos el muro
         document.getElementById("pantalla-login").style.display = "none";
-        // Guardamos en la sesión que ya entró para que no pida la clave todo el rato
         sessionStorage.setItem("acceso", "concedido");
     } else {
-        // Si es incorrecta, mostramos error
         document.getElementById("mensaje-error").style.display = "block";
     }
 }
 
-// Al cargar la página, comprobamos si ya había entrado antes
-window.onload = function () {
-    if (sessionStorage.getItem("acceso") === "concedido") {
-        document.getElementById("pantalla-login").style.display = "none";
-    }
-    generarIndice(); // Tu función que crea las líneas de las cartas
-};
-
+// 2. NAVEGACIÓN ENTRE SECCIONES
 function verSeccion(id) {
+    // Ocultamos todas las secciones primero
+    const secciones = document.querySelectorAll('.pantalla');
+    secciones.forEach(s => s.style.display = 'none');
+
+    // Mostramos la que queremos
     const seccion = document.getElementById(id);
-    
     if (seccion) {
-        // Solo si la sección existe, cambiamos el estilo
         seccion.style.display = 'block';
         
-        // --- AQUÍ AÑADIMOS EL CAMBIO DE URL ---
+        // Actualizar URL para secciones (opcional)
         const url = new URL(window.location.href);
         url.searchParams.set('seccion', id); 
         window.history.pushState({ seccion: id }, '', url.href);
-        // --------------------------------------
-        
-    } else {
-        console.error("No he encontrado ninguna sección con el ID: " + id);
     }
 }
 
-// 2. Generar las líneas de cartas automáticamente
+// 3. CARGA PRINCIPAL (UNIFICADA)
+window.addEventListener('DOMContentLoaded', () => {
+    // Comprobar acceso
+    if (sessionStorage.getItem("acceso") === "concedido") {
+        const login = document.getElementById("pantalla-login");
+        if(login) login.style.display = "none";
+    }
+
+    // Generar sobres
+    generarIndice();
+
+    // Comprobar si venimos de un link de correo (?dia=X)
+    const urlParams = new URLSearchParams(window.location.search);
+    const diaEnUrl = urlParams.get('dia');
+    if (diaEnUrl) {
+        mostrarCarta(diaEnUrl);
+    }
+});
+
+// 4. GENERAR ÍNDICE DE CARTAS
 function generarIndice() {
     const contenedor = document.getElementById('contenedor-lineas');
+    if(!contenedor) return;
     contenedor.innerHTML = "";
 
-    // Aquí pondremos el día real más adelante
     const hoy = calcularDiaActual();
-    const totalDeCartas = 365; // Puedes poner 365 si quieres verlas todas
+    const totalDeCartas = 365;
 
     for (let i = 1; i <= totalDeCartas; i++) {
         const linea = document.createElement('div');
-
         if (i <= hoy) {
-            // DISEÑO DESBLOQUEADO
             linea.className = 'linea-carta desbloqueada';
-            linea.innerHTML = `
-                <span class="icon-estado">💌</span>
-                <strong>Carta ${i}</strong>
-            `;
-            linea.onclick = function () {
-                mostrarCarta(i);
-                verSeccion('lectura');
-            };
+            linea.innerHTML = `<span>💌 Carta ${i}</span>`;
+            linea.onclick = () => mostrarCarta(i);
         } else {
-            // DISEÑO BLOQUEADO
             linea.className = 'linea-carta bloqueada';
-            linea.innerHTML = `
-                <span class="icon-estado">🔒</span>
-                <span>Carta ${i}</span>
-            `;
-            // Al ser bloqueada, no le asignamos función de click
+            linea.innerHTML = `<span>🔒 Carta ${i}</span>`;
         }
-
         contenedor.appendChild(linea);
     }
 }
 
+// 5. MOSTRAR CARTA
 async function mostrarCarta(id) {
+    // Primero vamos a la sección de lectura
+    verSeccion('lectura');
+
     const titulo = document.getElementById('titulo-carta');
     const texto = document.getElementById('texto-carta');
 
-    // --- BLOQUE DE CAMBIO DE URL ---
-    try {
-        // Creamos la nueva URL basándonos en la actual
-        const url = new URL(window.location.href);
-        url.searchParams.set('dia', id); // Esto añade o cambia el ?dia=X
-        
-        // Aplicamos el cambio en la barra de direcciones
-        window.history.pushState({ id: id }, '', url.href);
-        console.log("URL actualizada a: " + url.href); // Esto te ayudará a ver si funciona en la consola (F12)
-    } catch (e) {
-        console.error("Error al cambiar la URL:", e);
-    }
-    // -------------------------------
+    // Actualizar URL
+    const url = new URL(window.location.href);
+    url.searchParams.set('dia', id);
+    window.history.pushState({ id: id }, '', url.href);
 
     titulo.innerText = "Carta " + id;
     texto.innerText = "Abriendo el sobre... 💌";
@@ -102,39 +92,16 @@ async function mostrarCarta(id) {
         if (!respuesta.ok) throw new Error();
         const contenido = await respuesta.text();
         texto.innerText = contenido;
-
-        // Si tienes un modal, asegúrate de que se abra aquí
-        const modal = document.getElementById('modal-carta'); 
-        if(modal) modal.style.display = 'block';
-
     } catch (error) {
-        texto.innerText = "Hubo un problemilla al abrir esta carta, pero mi amor por ti sigue intacto. ❤️";
+        texto.innerText = "Todavía no he escrito esta carta, pero llegará pronto. ❤️";
     }
 }
 
+// 6. CALCULAR DÍA
 function calcularDiaActual() {
-    const fechaInicio = new Date('2026-04-03'); // Pon aquí la fecha en que empieza el diario
+    const fechaInicio = new Date('2026-04-03'); // Asegúrate de que esta fecha es la correcta
     const hoy = new Date();
-
-    // Calculamos la diferencia en milisegundos
     const diferencia = hoy - fechaInicio;
-
-    // Convertimos a días (milisegundos / 1000s / 60m / 60h / 24d)
     const diaActual = Math.floor(diferencia / (1000 * 60 * 60 * 24)) + 1;
-
-    return diaActual > 0 ? diaActual : 0; // Si aún no ha empezado, devuelve 0
+    return diaActual > 0 ? diaActual : 0;
 }
-
-window.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const diaEnUrl = urlParams.get('dia');
-
-    if (diaEnUrl) {
-        // Si hay un número en la URL, llamamos a tu función automáticamente
-        mostrarCarta(diaEnUrl);
-        
-        // Opcional: Si tienes un modal, asegúrate de que se vea
-        const modal = document.getElementById('tu-id-del-modal'); 
-        if(modal) modal.style.display = 'block';
-    }
-});
