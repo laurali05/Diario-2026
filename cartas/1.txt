@@ -1,0 +1,11 @@
+Hola, mi amor:
+
+Esta es la primera carta de prueba de tu sistema. 
+Si estás leyendo esto, significa que tu clase Fecha ha calculado 
+correctamente el día y que tu Lector ha sabido encontrar este archivo.
+
+Estoy muy orgullosa de cómo estás programando esto. 
+¡Un día menos para nuestro aniversario!
+
+Con amor, 
+Tu Programadora Favorita.
