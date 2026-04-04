@@ -70,19 +70,32 @@ async function mostrarCarta(id) {
     const titulo = document.getElementById('titulo-carta');
     const texto = document.getElementById('texto-carta');
 
-    const nuevaUrl = window.location.pathname + '?dia=' + id;
-    window.history.pushState({ path: nuevaUrl }, '', nuevaUrl);
+    // --- BLOQUE DE CAMBIO DE URL ---
+    try {
+        // Creamos la nueva URL basándonos en la actual
+        const url = new URL(window.location.href);
+        url.searchParams.set('dia', id); // Esto añade o cambia el ?dia=X
+        
+        // Aplicamos el cambio en la barra de direcciones
+        window.history.pushState({ id: id }, '', url.href);
+        console.log("URL actualizada a: " + url.href); // Esto te ayudará a ver si funciona en la consola (F12)
+    } catch (e) {
+        console.error("Error al cambiar la URL:", e);
+    }
+    // -------------------------------
 
     titulo.innerText = "Carta " + id;
     texto.innerText = "Abriendo el sobre... 💌";
 
     try {
-        // Esto busca el archivo 1.txt, 2.txt, etc., en tu carpeta de GitHub
         const respuesta = await fetch(`cartas/${id}.txt`);
         if (!respuesta.ok) throw new Error();
         const contenido = await respuesta.text();
-
         texto.innerText = contenido;
+
+        // Si tienes un modal, asegúrate de que se abra aquí
+        const modal = document.getElementById('modal-carta'); 
+        if(modal) modal.style.display = 'block';
 
     } catch (error) {
         texto.innerText = "Hubo un problemilla al abrir esta carta, pero mi amor por ti sigue intacto. ❤️";
