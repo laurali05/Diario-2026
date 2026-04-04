@@ -70,6 +70,9 @@ async function mostrarCarta(id) {
     const titulo = document.getElementById('titulo-carta');
     const texto = document.getElementById('texto-carta');
 
+    const nuevaUrl = window.location.pathname + '?dia=' + id;
+    window.history.pushState({ path: nuevaUrl }, '', nuevaUrl);
+
     titulo.innerText = "Carta " + id;
     texto.innerText = "Abriendo el sobre... 💌";
 
@@ -78,7 +81,9 @@ async function mostrarCarta(id) {
         const respuesta = await fetch(`cartas/${id}.txt`);
         if (!respuesta.ok) throw new Error();
         const contenido = await respuesta.text();
+
         texto.innerText = contenido;
+
     } catch (error) {
         texto.innerText = "Hubo un problemilla al abrir esta carta, pero mi amor por ti sigue intacto. ❤️";
     }
@@ -96,5 +101,17 @@ function calcularDiaActual() {
 
     return diaActual > 0 ? diaActual : 0; // Si aún no ha empezado, devuelve 0
 }
-// Ejecutar al cargar la web
-window.onload = generarIndice;
+
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const diaEnUrl = urlParams.get('dia');
+
+    if (diaEnUrl) {
+        // Si hay un número en la URL, llamamos a tu función automáticamente
+        mostrarCarta(diaEnUrl);
+        
+        // Opcional: Si tienes un modal, asegúrate de que se vea
+        const modal = document.getElementById('tu-id-del-modal'); 
+        if(modal) modal.style.display = 'block';
+    }
+});
