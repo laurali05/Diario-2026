@@ -126,15 +126,9 @@ function calcularDiaActual() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const diaEnUrl = urlParams.get('dia');
-
-    if (diaEnUrl) {
-        // Si hay un número en la URL, llamamos a tu función automáticamente
-        mostrarCarta(diaEnUrl);
-        
-        // Opcional: Si tienes un modal, asegúrate de que se vea
-        const modal = document.getElementById('tu-id-del-modal'); 
-        if(modal) modal.style.display = 'block';
+    const params = new URLSearchParams(window.location.search);
+    const dia = params.get('dia');
+    if (dia) {
+        mostrarCarta(dia); // Esto fuerza a la web a abrir la carta del link
     }
 });
