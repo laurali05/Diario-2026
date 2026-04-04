@@ -21,12 +21,22 @@ window.onload = function () {
     generarIndice(); // Tu función que crea las líneas de las cartas
 };
 
-// 1. Función para cambiar entre pantallas
 function verSeccion(id) {
-    // Ocultamos todas
-    document.querySelectorAll('.pantalla').forEach(p => p.style.display = 'none');
-    // Mostramos la elegida
-    document.getElementById(id).style.display = 'block';
+    const seccion = document.getElementById(id);
+    
+    if (seccion) {
+        // Solo si la sección existe, cambiamos el estilo
+        seccion.style.display = 'block';
+        
+        // --- AQUÍ AÑADIMOS EL CAMBIO DE URL ---
+        const url = new URL(window.location.href);
+        url.searchParams.set('seccion', id); 
+        window.history.pushState({ seccion: id }, '', url.href);
+        // --------------------------------------
+        
+    } else {
+        console.error("No he encontrado ninguna sección con el ID: " + id);
+    }
 }
 
 // 2. Generar las líneas de cartas automáticamente
