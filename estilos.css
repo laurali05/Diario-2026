@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 
 /* Reset para que el rosa llegue a los bordes */
-/* Reset y Color de Fondo Crema */
+/* Reset y Color de Fondo */
 body, html {
     margin: 0;
     padding: 0;
@@ -11,7 +11,7 @@ body, html {
 }
 
 /* EL RECTÁNGULO ROSA  */
-.banner-rosa {
+.banner-rosa { 
     background-color: #ffc1d1; /* Rosa pastel */
     width: 100%;
     height: 120px;

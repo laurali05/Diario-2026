@@ -85,7 +85,7 @@ async function mostrarCarta(id) {
 }
 
 function calcularDiaActual() {
-    const fechaInicio = new Date('2026-08-03'); // Pon aquí la fecha en que empieza el diario
+    const fechaInicio = new Date('2026-04-03'); // Pon aquí la fecha en que empieza el diario
     const hoy = new Date();
 
     // Calculamos la diferencia en milisegundos
