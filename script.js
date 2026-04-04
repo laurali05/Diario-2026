@@ -73,18 +73,18 @@ function generarIndice() {
 
 // 5. MOSTRAR CARTA
 async function mostrarCarta(id) {
-    // Primero vamos a la sección de lectura
-    verSeccion('lectura');
+    // 1. Ocultamos el índice de cartas y mostramos la pantalla de lectura
+    document.getElementById('cartas').style.display = 'none'; 
+    document.getElementById('lectura').style.display = 'block';
 
-    const titulo = document.getElementById('titulo-carta');
-    const texto = document.getElementById('texto-carta');
-
-    // Actualizar URL
+    // 2. Actualizamos la URL (Lo que ya hacíamos)
     const url = new URL(window.location.href);
     url.searchParams.set('dia', id);
     window.history.pushState({ id: id }, '', url.href);
 
-    titulo.innerText = "Carta " + id;
+    // 3. Ponemos los títulos
+    document.getElementById('titulo-carta').innerText = "Carta " + id;
+    const texto = document.getElementById('texto-carta');
     texto.innerText = "Abriendo el sobre... 💌";
 
     try {
@@ -93,7 +93,7 @@ async function mostrarCarta(id) {
         const contenido = await respuesta.text();
         texto.innerText = contenido;
     } catch (error) {
-        texto.innerText = "Todavía no he escrito esta carta, pero llegará pronto. ❤️";
+        texto.innerText = "Todavía no hay carta para este día. ❤️";
     }
 }
 
@@ -105,3 +105,14 @@ function calcularDiaActual() {
     const diaActual = Math.floor(diferencia / (1000 * 60 * 60 * 24)) + 1;
     return diaActual > 0 ? diaActual : 0;
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const diaEnUrl = urlParams.get('dia');
+
+    if (diaEnUrl) {
+        // Si hay un día en la URL, ocultamos el inicio y mostramos la carta
+        document.getElementById('inicio').style.display = 'none';
+        mostrarCarta(diaEnUrl);
+    }
+});
