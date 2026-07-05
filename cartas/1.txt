@@ -1,11 +1,34 @@
 Hola, mi amor:
 
-Esta es la primera carta de prueba de tu sistema. 
-Si estás leyendo esto, significa que tu clase Fecha ha calculado 
-correctamente el día y que tu Lector ha sabido encontrar este archivo.
+¡Feliz 4º aniversario! No te puedes imaginar lo feliz que me hace poder celebrar un año más a tu lado.
 
-Estoy muy orgullosa de cómo estás programando esto. 
-¡Un día menos para nuestro aniversario!
+Mi regalo consta de muchas partes, la primera de ellas será mi respuesta a tu carta, esa que me escribiste por mi cumple. Tu carta fue preciosa, igual que todas las que me has escrito. Siempre me encanta leer lo que piensas de mí, incluso cuando me parece que me tienes idealizada y que nunca ves mis puntos flacos. Aunque tu gramática no sea la mejor, las ideas y los pensamientos son los más bonitos y honestos que podría desear.
 
-Con amor, 
-Tu Programadora Favorita.
+Yo no voy a centrarme mucho más en las cualidades o defectos que tienes porque eso ya te lo he dicho un millón de veces; sin embargo, si quiero responder a algunas de las cosas que pusiste en ella. Me parece increíble que seas consciente de tantísimos detalles sobre mi personalidad, de cosas de las que yo ni me doy cuenta que hago. Yo no pienso que tu seas una persona de 10, nadie lo es, sin embargo, eres la persona a la que yo quiero a mi lado el resto de mi vida. Incluso aunque tus defectos hagan que como persona seas un 9,9. 
+
+Debo admitir que a veces, aun queriendo pasar el resto de mi vida contigo, tengo dudas. Somos muy jóvenes y somos la primera pareja formal el uno del otro, y me da miedo que no hayamos experimentado lo suficiente, que nos cansemos y que pase lo que dice la gente: que por haber estado solo el uno con el otro, en algún momento queramos probar a estar con otras personas. Sin embargo, aun con todo eso presente, sigo pensando que no me puedo imaginar nada mejor que ir viendo pasar la vida al lado de la misma persona, y ver cómo vamos cambiando tanto nosotros como nuestra relación con los años.
+
+Sobre lo feliz que eres oyendo y viendo cómo son mis trabajos de la uni: es cierto que estudio lo que me apasiona y eso se nota, no solo en cómo hablo, sino en cómo pongo todo mi esfuerzo en ello.Pero igual que tu eres feliz observando, yo soy feliz notando lo orgulloso que estás de mí, sabiendo que me apoyas al 100% y que estas dispuesto a ayudarme en todo lo que sea necesario. No conozco mejor persona y más generosa que tú; das siempre todo por los que quieres e incluso te pones en segundo lugar con tal de que los demás sean felices, aunque eso pudiera llegar a perjudicarte a ti. 
+
+Creo que de las mejores cosas de nuestra relación son, tal y cómo tu dices, nuestros códigos. Me parece algo increíblemente personal que no podremos volver a compartir con nadie porque es puramente “nuestro”. Los apretones en la mano fueron nuestra manera de comunicarnos incluso cuando no podíamos usar palabras; pero lo mejor que tenemos, en mi opinión, son las conversaciones con los peluches. Realmente eres de las pocas personas que saben que en mi casa pasa eso, y no te imaginas lo feliz que me hizo saber que no iba a tener que esconder ese rasgo de mi personalidad que de cara al público me avergüenza comentar. Ver que contigo podía ser yo misma hasta ese punto fue de las cosas que más me hizo decantarme para empezar nuestra relación. Así que no me puedo imaginar a una mejor persona para compartir todas las facetas de mi vida.
+
+Obviamente sé que ha sido un año duro, pero me parece que ha sido el mejor año que hemos tenido desde que yo me fui a la universidad. Creo que ha sido el periodo en el que menos problemas hemos tenido entre nosotros y en el que más nos hemos apoyado.
+Soy plenamente consciente de que para ti ha sido un año súper difícil; sé que no fuiste feliz en Palermo y que estabas todo el rato deseando volver a casa.No obstante, quiero decirte lo orgullosa que estoy de tí. Superaste todo eso y, tras estar un tiempo un poco sumido en tu drama y en tu “mala suerte”, te recuperaste e intentaste empezar a verlo todo con otros ojos. Y aunque creas que no me doy cuenta, soy plenamente consciente de lo difícil que fue eso para tí, de lo que en esos momentos de bajón te cuesta ver una salida y el lado positivo de las cosas. Me hace sentirme la persona más orgullosa del mundo ver cómo vas mejorando esos pequeños defectos que, además de hacerte mejor persona, provocan que seas más feliz.
+
+Incluso con el problema que tuvimos al final del año, en el cual sentí que no te habías esforzado lo suficiente respecto a la universidad, quiero que sepas que fui consciente de tu esfuerzo con la universidad y con la ciudad todo el rato. Sin embargo, me molestó porque, después de haber hecho los dos tantísimo esfuerzo, no íbamos a ver los resultados hasta más tarde por culpa de una tontería como dejar de lado un simple trabajo. Pero esos problemas son precisamente los que hacen nuestra relación fuerte, viendo cómo,  aunque no todo sea perfecto lo solucionamos. Si no hubiese esos problemas, nuestro cielo no tendría ninguna estrella, y en un cielo vacío no se forman constelaciones. Y yo quiero poder dibujar contigo la galaxia entera.
+
+En tu carta hablabas de que desde el paseo del hospital te encantaría tener todos esos recuerdos guardados en algún sitio… Pues bienvenido a ese sitio: este es nuestro rincón secreto. Solo tuyo y mío, y solo sobre nosotros. Este será nuestro rincón secreto donde podrás ver varias cosas:
+Tendrás un recuerdo diario: una carta, una foto, una canción o cualquier cosa que me recuerde a tí.
+Tendrás la oportunidad de responder a cada uno de los recuerdos, dando tu opinión o describiendo cómo te sentías tú en ese momento.
+Cada foto, cada canción y recuerdo se guardará en su propia pestaña para que puedas acceder a ellos más fácilmente.
+
+Todo esto, ahora mismo, solo es una idea. No sé si mi programación dará para todo lo que tengo pensado, ni si las canciones tienen derechos de autor y no se pueden publicar así como así en internet. Esas cosas las iré intentando solucionar sobre la marcha y probablemente haya cambios en la web durante el año, pero lo que te aseguro al 100% es que tu tendrás un año lleno de recuerdos de nosotros. Espero que lo disfrutes y que no te dé pereza responder diariamente.
+
+Me encantaría que todos estos recuerdos se guarden para siempre y que sea una forma de enseñarle a nuestros hijos en el futuro lo mucho que nos queríamos y cómo nos elegimos, aunque no siempre fuese fácil. Pero si te soy sincera, yo aún no sueño tan lejos; no me imagino una vida entera, ni la casa, ni los muebles. ni los posibles nuevos miembros que vayamos teniendo. Yo pienso en dónde estudiaremos el máster y si habrá alguna opción de dejar de estar a distancia. Pienso si en 3 años, cuando empecemos a trabajar, conseguiremos que sea en la misma ciudad. En si en algún momento lograremos celebrar todas las fiestas juntos y que lo que queramos sea que el otro se marche unos días para tener un poco de espacio y poder dormir en la cama estirados como una estrella de mar.
+Yo sueño con un futuro cercano, con las cosas en las que debemos trabajar actualmente para poder llegar a conseguir ese futuro juntos con el que soñamos.
+
+Bueno amor, hasta aquí mi primer recuerdo de este año. Mañana recibirás tu mensaje para ver el próximo. ¡Bienvenido a tu año de recuerdos! Espero que te encante.
+
+Te amo, y eso no cambiará nunca. Incluso aunque haya épocas en las que nuestro cielo empiece a ser demasiado estrellado; eso solo significará que cada vez tendremos más vivencias juntos.
+
+P.D: Esto supuestamente debería llegarte a las 00:00 del día 3, aunque igual prefiero ver tu reacción en persona.
