@@ -99,7 +99,7 @@ async function mostrarCarta(id) {
 
 // 6. CALCULAR DÍA
 function calcularDiaActual() {
-    const fechaInicio = new Date('2026-03-08'); // Asegúrate de que esta fecha es la correcta
+    const fechaInicio = new Date('2026-08-03'); // Asegúrate de que esta fecha es la correcta
     const hoy = new Date();
     const diferencia = hoy - fechaInicio;
     const diaActual = Math.floor(diferencia / (1000 * 60 * 60 * 24)) + 1;
