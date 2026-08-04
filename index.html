@@ -64,7 +64,6 @@
     </section>
 
     <section id="planes" class="pantalla" style="display:none;">
-        <h2>✨ Nuestros Planes Juntos</h2>
         <p class="frase-intro">Cosas que queremos hacer juntos, viajes, citas o momentos por vivir. ❤️</p>
 
         <!-- Formulario para añadir un plan -->
@@ -80,7 +79,6 @@
     </section>
 
     <section id="cartas" class="pantalla" style="display:none;">
-        <h2>Índice de Cartas</h2>
         <div id="contenedor-lineas">
         </div>
     </section>
@@ -107,7 +105,24 @@
                 <p id="estado-envio" style="display:none; color: #5b3e2b; margin-top: 10px; font-weight: bold;"></p>
             </div>
         </div>
+    </section>
 
+    <section id="imagenes" class="pantalla" style="display:none;">
+        <p class="frase-intro">Nuestros momentos favoritos juntos. ❤️</p>
+
+        <div class="grid-galeria">
+            <!-- Foto 1 -->
+            <div class="bloque-foto">
+                <img src="imagenes/nosotros.jpeg" alt="Nosotros" class="foto-galeria">
+            </div>
+
+            <!-- Foto 2: Redirige a la Carta 5 (ejemplo)
+            <div class="bloque-foto foto-interactiva" onclick="abrirCartaDesdeImagen(5)">
+                <img src="imagenes/foto2.jpeg" alt="Carta 5" class="foto-galeria">
+                <p class="pie-foto">Nuestro viaje juntos (Carta 5)</p>
+            </div> -->
+
+        </div>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
