@@ -322,3 +322,23 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// 15. ABRIR CARTA DESDE LA GALERÍA DE IMÁGENES
+function abrirCartaDesdeImagen(diaNum) {
+    const hoy = calcularDiaActual();
+
+    // 1. Comprobar si la carta de esa foto ya está disponible
+    if (diaNum > hoy) {
+        alert(`🔒 La carta del día ${diaNum} vinculada a esta foto aún no está disponible.`);
+        return;
+    }
+
+    // 2. Ocultar la sección de imágenes
+    const seccionImagenes = document.getElementById('imagenes');
+    if (seccionImagenes) {
+        seccionImagenes.style.display = 'none';
+    }
+
+    // 3. Abrir la pantalla de lectura con la carta elegida
+    mostrarCarta(diaNum);
+}

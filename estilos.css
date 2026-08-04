@@ -427,3 +427,35 @@ html {
 .btn-eliminar-plan:hover {
     color: #ff85a2;
 }
+
+/* GALERÍA DE IMÁGENES */
+.grid-galeria {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    justify-items: center;
+    margin-top: 30px;
+}
+
+.foto-galeria {
+    width: 100%;
+    max-width: 230px;
+    height: 230px;
+    object-fit: cover; /* Ajusta la imagen sin deformarla */
+    border: 10px solid white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.foto-galeria:hover {
+    transform: scale(1.05) rotate(1deg);
+}
+
+.foto-interactiva {
+    cursor: pointer;
+}
+
+.foto-interactiva:hover .foto-galeria {
+    transform: scale(1.05) rotate(1deg);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
