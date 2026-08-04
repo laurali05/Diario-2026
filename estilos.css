@@ -459,3 +459,18 @@ html {
     transform: scale(1.05) rotate(1deg);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
+
+/* FOTO DESBLOQUEADA */
+.foto-interactiva {
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* FOTO BLOQUEADA PARA ÉL */
+.foto-interactiva.foto-bloqueada {
+    cursor: not-allowed;
+    opacity: 0.5;
+    filter: blur(4px); /* Efecto borroso */
+    pointer-events: none; /* Impide hacer clic */
+}
