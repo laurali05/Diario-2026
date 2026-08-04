@@ -333,3 +333,97 @@ html {
     background-color: #ff85a2;
     transform: translateY(-2px);
 }
+
+/* SECCIÓN PLANES JUNTOS */
+.caja-nuevo-plan {
+    display: flex;
+    gap: 10px;
+    margin: 25px 0;
+    justify-content: center;
+}
+
+.caja-nuevo-plan input {
+    flex: 1;
+    max-width: 400px;
+    padding: 12px 18px;
+    border: 1px solid #d4a373;
+    border-radius: 25px;
+    font-size: 1rem;
+    outline: none;
+    background-color: #fff;
+    color: #5b3e2b;
+}
+
+.caja-nuevo-plan button {
+    background-color: #ffc1d1;
+    color: #5b3e2b;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.caja-nuevo-plan button:hover {
+    background-color: #ff85a2;
+}
+
+#contenedor-planes {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.item-plan {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+}
+
+.item-plan.completado {
+    opacity: 0.65;
+    background-color: #f7f4ef;
+}
+
+.item-plan.completado .texto-plan {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.info-plan {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    flex: 1;
+}
+
+.checkbox-plan {
+    font-size: 1.3rem;
+}
+
+.texto-plan {
+    font-size: 1.05rem;
+    color: #5b3e2b;
+}
+
+.btn-eliminar-plan {
+    background: none;
+    border: none;
+    color: #d4a373;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 5px;
+    transition: color 0.2s;
+}
+
+.btn-eliminar-plan:hover {
+    color: #ff85a2;
+}

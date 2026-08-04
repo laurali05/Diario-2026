@@ -1,4 +1,11 @@
-// 1. VALIDAR ACCESO
+// 1. INICIALIZAR SUPABASE (Pon tus datos del Paso 1)
+const SUPABASE_URL = 'https://wkcmqfkmvzlzkwqxrzzy.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndrY21xZmttdnpsemt3cXhyenp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4Mzc0MTUsImV4cCI6MjEwMTQxMzQxNX0.GAhAUJqOhRvt-bXk43weGi1yA8ZP2kLy7VY00Uw9miI';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let cartaActualId = null;
+
+// 2. VALIDAR ACCESO
 function validarAcceso() {
     const claveCorrecta = "030822";
     const claveIntroducida = document.getElementById("password").value;
@@ -11,7 +18,7 @@ function validarAcceso() {
     }
 }
 
-// 2. NAVEGACIÓN ENTRE SECCIONES
+// 3. NAVEGACIÓN ENTRE SECCIONES
 function verSeccion(id) {
     // Ocultamos todas las secciones primero
     const secciones = document.querySelectorAll('.pantalla');
@@ -22,6 +29,10 @@ function verSeccion(id) {
     if (seccion) {
         seccion.style.display = 'block';
 
+        if (id === 'planes') {
+            cargarPlanes();
+        }
+
         // Actualizar URL para secciones (opcional)
         const url = new URL(window.location.href);
         url.searchParams.set('seccion', id);
@@ -29,7 +40,7 @@ function verSeccion(id) {
     }
 }
 
-// 3. CARGA PRINCIPAL (UNIFICADA)
+// 4. CARGA PRINCIPAL (UNIFICADA)
 window.addEventListener('DOMContentLoaded', () => {
     // Comprobar acceso
     if (sessionStorage.getItem("acceso") === "concedido") {
@@ -48,7 +59,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// 4. GENERAR ÍNDICE DE CARTAS
+// 5. GENERAR ÍNDICE DE CARTAS
 function generarIndice() {
     const contenedor = document.getElementById('contenedor-lineas');
     if (!contenedor) return;
@@ -71,34 +82,26 @@ function generarIndice() {
     }
 }
 
-// 5. MOSTRAR CARTA
-// 5. MOSTRAR CARTA (ACTUALIZADO)
+// 6. MOSTRAR CARTA
 async function mostrarCarta(id) {
-    // 1. Ocultamos el índice de cartas y mostramos la pantalla de lectura
+    cartaActualId = id;
+
+    // Ocultamos el índice y mostramos la lectura
     document.getElementById('cartas').style.display = 'none';
     document.getElementById('lectura').style.display = 'block';
 
-    // 2. Actualizamos el valor del campo oculto para el formulario de comentarios
-    const inputCartaNum = document.getElementById('input-carta-num');
-    if (inputCartaNum) {
-        inputCartaNum.value = "Carta #" + id;
-    }
-
-    // Limpiar textarea y mensaje de estado anterior
-    const textarea = document.querySelector('.caja-comentarios textarea');
-    const estado = document.getElementById('estado-envio');
-    if (textarea) textarea.value = "";
-    if (estado) estado.style.display = "none";
-
-    // 3. Actualizamos la URL
+    // Actualizamos URL
     const url = new URL(window.location.href);
     url.searchParams.set('dia', id);
     window.history.pushState({ id: id }, '', url.href);
 
-    // 4. Cargar el título y texto de la carta
+    // Titulo y contenido de la carta
     document.getElementById('titulo-carta').innerText = "Carta " + id;
     const texto = document.getElementById('texto-carta');
     texto.innerText = "Abriendo el sobre... 💌";
+
+    // Cargar los comentarios guardados de esta carta
+    cargarComentarios(id);
 
     try {
         const respuesta = await fetch(`cartas/${id}.txt`);
@@ -110,48 +113,81 @@ async function mostrarCarta(id) {
     }
 }
 
-// 6. ENVÍO DE COMENTARIOS VÍA AJAX (Sin recargar la página)
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("formulario-comentario");
-    const estado = document.getElementById("estado-envio");
+// 7. ENVÍO DE COMENTARIOS VÍA AJAX (Sin recargar la página)
+async function cargarComentarios(diaId) {
+    const contenedor = document.getElementById('lista-comentarios');
+    if (!contenedor) return;
+    contenedor.innerHTML = "<p style='color: #888; font-size: 0.85rem;'>Cargando comentarios...</p>";
 
-    if (form) {
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault(); // Evita la recarga habitual del formulario
+    const { data: comentarios, error } = await supabaseClient
+        .from('comentarios')
+        .select('*')
+        .eq('dia_id', diaId)
+        .order('created_at', { ascending: true });
 
-            const data = new FormData(form);
-            const btn = document.getElementById("btn-enviar-comentario");
-            btn.disabled = true;
-            btn.innerText = "Enviando... 💌";
-
-            try {
-                const response = await fetch(form.action, {
-                    method: form.method,
-                    body: data,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    form.reset();
-                    estado.style.display = "block";
-                    estado.innerText = "¡Mensaje enviado con éxito! Nos leemos prontito. ❤️";
-                } else {
-                    throw new Error("Error al enviar");
-                }
-            } catch (error) {
-                estado.style.display = "block";
-                estado.innerText = "Vaya, ha habido un problema al enviar tu mensaje. Inténtalo de nuevo.";
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "Enviar respuesta ❤️";
-            }
-        });
+    if (error) {
+        contenedor.innerHTML = "<p style='color: #888;'>Error al cargar los comentarios.</p>";
+        return;
     }
-});
 
-// 6. CALCULAR DÍA
+    if (!comentarios || comentarios.length === 0) {
+        contenedor.innerHTML = "<p style='color: #888; font-size: 0.85rem; font-style: italic;'>Aún no hay ningún comentario en esta carta. ¡Sé el primero en escribir uno!</p>";
+        return;
+    }
+
+    contenedor.innerHTML = comentarios.map(c => {
+        const fecha = new Date(c.created_at).toLocaleDateString('es-ES', {
+            day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+        return `
+            <div class="comentario-item">
+                <span class="comentario-fecha">🗓️ ${fecha}</span>
+                <p class="comentario-texto">${escapeHTML(c.texto)}</p>
+            </div>
+        `;
+    }).join('');
+}
+
+// 8. ENVIAR UN NUEVO COMENTARIO
+async function enviarComentario() {
+    const textarea = document.getElementById('texto-comentario');
+    const estado = document.getElementById('estado-envio');
+    const btn = document.getElementById('btn-enviar-comentario');
+    const texto = textarea.value.trim();
+
+    if (!texto || !cartaActualId) return;
+
+    btn.disabled = true;
+    btn.innerText = "Publicando... 💌";
+
+    const { error } = await supabaseClient
+        .from('comentarios')
+        .insert([{ dia_id: cartaActualId, texto: texto }]);
+
+    if (!error) {
+        textarea.value = '';
+        estado.style.display = 'block';
+        estado.innerText = '¡Comentario guardado! ❤️';
+        setTimeout(() => { estado.style.display = 'none'; }, 3000);
+
+        // Volvemos a cargar la lista para que aparezca al instante
+        cargarComentarios(cartaActualId);
+    } else {
+        alert('Ocurrió un problema al guardar el comentario.');
+    }
+
+    btn.disabled = false;
+    btn.innerText = "Publicar comentario ❤️";
+}
+
+// Función auxiliar de seguridad para evitar inyección de código
+function escapeHTML(str) {
+    return str.replace(/[&<>'"]/g,
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+    );
+}
+
+// 9. CALCULAR DÍA
 function calcularDiaActual() {
     const fechaInicio = new Date('2026-08-03'); // Asegúrate de que esta fecha es la correcta
     const hoy = new Date();
@@ -170,3 +206,79 @@ window.addEventListener('DOMContentLoaded', () => {
         mostrarCarta(diaEnUrl);
     }
 });
+
+// 9. CARGAR PLANES DESDE SUPABASE
+async function cargarPlanes() {
+    const contenedor = document.getElementById('contenedor-planes');
+    if (!contenedor) return;
+
+    const { data: planes, error } = await supabaseClient
+        .from('planes')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        contenedor.innerHTML = "<p style='color: #888;'>Error al cargar los planes.</p>";
+        return;
+    }
+
+    if (!planes || planes.length === 0) {
+        contenedor.innerHTML = "<p style='color: #888; text-align: center; font-style: italic;'>Aún no tenéis planes en la lista. ¡Añadid el primero!</p>";
+        return;
+    }
+
+    contenedor.innerHTML = planes.map(p => `
+        <div class="item-plan ${p.realizado ? 'completado' : ''}">
+            <div class="info-plan" onclick="comprobarPlan(${p.id}, ${!p.realizado})">
+                <span class="checkbox-plan">${p.realizado ? '✅' : '⚪'}</span>
+                <span class="texto-plan">${escapeHTML(p.titulo)}</span>
+            </div>
+            <button class="btn-eliminar-plan" onclick="eliminarPlan(${p.id})" title="Eliminar plan">🗑️</button>
+        </div>
+    `).join('');
+}
+
+// 10. AÑADIR UN NUEVO PLAN
+async function agregarPlan() {
+    const input = document.getElementById('input-nuevo-plan');
+    const titulo = input.value.trim();
+
+    if (!titulo) return;
+
+    const { error } = await supabaseClient
+        .from('planes')
+        .insert([{ titulo: titulo }]);
+
+    if (!error) {
+        input.value = '';
+        cargarPlanes();
+    } else {
+        alert('Hubo un error al guardar el plan.');
+    }
+}
+
+// 11. MARCAR PLAN COMO CUMPLIDO / PENDIENTE
+async function comprobarPlan(id, estadoActual) {
+    const { error } = await supabaseClient
+        .from('planes')
+        .update({ realizado: estadoActual })
+        .eq('id', id);
+
+    if (!error) {
+        cargarPlanes();
+    }
+}
+
+// 12. ELIMINAR UN PLAN
+async function eliminarPlan(id) {
+    if (!confirm("¿Seguro que quieres borrar este plan?")) return;
+
+    const { error } = await supabaseClient
+        .from('planes')
+        .delete()
+        .eq('id', id);
+
+    if (!error) {
+        cargarPlanes();
+    }
+}
