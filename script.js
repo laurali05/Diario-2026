@@ -207,7 +207,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// 9. CARGAR PLANES DESDE SUPABASE
+// 10. CARGAR PLANES DESDE SUPABASE
 async function cargarPlanes() {
     const contenedor = document.getElementById('contenedor-planes');
     if (!contenedor) return;
@@ -238,7 +238,7 @@ async function cargarPlanes() {
     `).join('');
 }
 
-// 10. AÑADIR UN NUEVO PLAN
+// 11. AÑADIR UN NUEVO PLAN
 async function agregarPlan() {
     const input = document.getElementById('input-nuevo-plan');
     const titulo = input.value.trim();
@@ -257,7 +257,7 @@ async function agregarPlan() {
     }
 }
 
-// 11. MARCAR PLAN COMO CUMPLIDO / PENDIENTE
+// 12. MARCAR PLAN COMO CUMPLIDO / PENDIENTE
 async function comprobarPlan(id, estadoActual) {
     const { error } = await supabaseClient
         .from('planes')
@@ -269,7 +269,7 @@ async function comprobarPlan(id, estadoActual) {
     }
 }
 
-// 12. ELIMINAR UN PLAN
+// 13. ELIMINAR UN PLAN
 async function eliminarPlan(id) {
     if (!confirm("¿Seguro que quieres borrar este plan?")) return;
 
@@ -283,7 +283,7 @@ async function eliminarPlan(id) {
     }
 }
 
-// 10. BUSCADOR PARA IR A UN DÍA CONCRETO
+// 14. BUSCADOR PARA IR A UN DÍA CONCRETO
 function buscarCarta() {
     const input = document.getElementById('input-busqueda');
     if (!input) return;
@@ -310,3 +310,15 @@ function buscarCarta() {
     // Opcional: limpiar el input del buscador
     input.value = '';
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+    // Escuchar la tecla Enter en el buscador
+    const inputBusqueda = document.getElementById('input-busqueda');
+    if (inputBusqueda) {
+        inputBusqueda.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                buscarCarta();
+            }
+        });
+    }
+});
