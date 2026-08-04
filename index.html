@@ -40,8 +40,7 @@
 
                 <div class="bloque-foto">
                     <a href="javascript:void(0)" onclick="verSeccion('imagenes')" class=" enlace-foto">
-                        <img src="imagenes/nosotros.jpeg" alt="Nosotros"
-                            class="foto-inicio">
+                        <img src="imagenes/nosotros.jpeg" alt="Nosotros" class="foto-inicio">
                     </a>
                     <p class="pie-foto">Los días más especiales del año para ti</p>
                 </div>
@@ -76,6 +75,20 @@
             <h3 id="titulo-carta">Carta #X</h3>
             <p id="texto-carta">Aquí irá el mensaje...</p>
         </article>
+        <div class="caja-comentarios">
+            <h4>💬 ¿Qué te ha parecido la carta de hoy?</h4>
+
+            <form id="formulario-comentario" action="https://formspree.io/f/xyeggelp" method="POST">
+                <input type="hidden" name="Carta Numero" id="input-carta-num" value="">
+
+                <textarea name="opinion" placeholder="Escribe tu mensaje o lo que has sentido al leerla..."
+                    required></textarea>
+
+                <button type="submit" id="btn-enviar-comentario">Enviar respuesta ❤️</button>
+            </form>
+
+            <p id="estado-envio" style="display:none; color: #5b3e2b; margin-top: 15px; font-weight: bold;"></p>
+        </div>
     </section>
 
     <script src="script.js"></script>
