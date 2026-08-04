@@ -429,6 +429,10 @@ html {
 }
 
 /* GALERÍA DE IMÁGENES */
+#imagenes {
+    max-width: 800px; /* Permite colocar 2 o 3 fotos en horizontal */
+}
+
 .grid-galeria {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
