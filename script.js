@@ -282,3 +282,31 @@ async function eliminarPlan(id) {
         cargarPlanes();
     }
 }
+
+// 10. BUSCADOR PARA IR A UN DÍA CONCRETO
+function buscarCarta() {
+    const input = document.getElementById('input-busqueda');
+    if (!input) return;
+
+    const numDia = parseInt(input.value, 10);
+    const hoy = calcularDiaActual();
+
+    // 1. Validar que se haya introducido un número correcto
+    if (isNaN(numDia) || numDia < 1 || numDia > 365) {
+        alert("Por favor, introduce un número de día válido (entre 1 y 365).");
+        return;
+    }
+
+    // 2. Comprobar si la carta está bloqueada (si es un día futuro)
+    if (numDia > hoy) {
+        alert(`🔒 La carta del día ${numDia} aún no está disponible.`);
+        return;
+    }
+
+    // 3. Si el día ya ha llegado, ocultamos el inicio y mostramos la carta
+    document.getElementById('inicio').style.display = 'none';
+    mostrarCarta(numDia);
+    
+    // Opcional: limpiar el input del buscador
+    input.value = '';
+}
