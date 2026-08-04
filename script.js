@@ -68,11 +68,16 @@ function generarIndice() {
     const hoy = calcularDiaActual();
     const totalDeCartas = 365;
 
+    // Detectar si estás trabajando en local (Live Server)
+    const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+
     for (let i = 1; i <= totalDeCartas; i++) {
         const linea = document.createElement('div');
-        if (i <= hoy) {
+
+        // Si estás en local O si el día ya ha llegado, se desbloquea
+        if (esLocal || i <= hoy) {
             linea.className = 'linea-carta desbloqueada';
-            linea.innerHTML = `<span>💌 Carta ${i}</span>`;
+            linea.innerHTML = `<span>💌 Carta ${i} ${i === hoy ? '✨ (Hoy)' : ''}</span>`;
             linea.onclick = () => mostrarCarta(i);
         } else {
             linea.className = 'linea-carta bloqueada';
@@ -95,6 +100,13 @@ async function mostrarCarta(id) {
     url.searchParams.set('dia', id);
     window.history.pushState({ id: id }, '', url.href);
 
+    // Dentro de la función mostrarCarta(id):
+    const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+
+    if (!esLocal && diaNum > hoy) {
+        alert(`🔒 La carta del día ${diaNum} aún no está disponible.`);
+        return;
+    }
     // Titulo y contenido de la carta
     document.getElementById('titulo-carta').innerText = "Carta " + id;
     const texto = document.getElementById('texto-carta');
@@ -306,7 +318,7 @@ function buscarCarta() {
     // 3. Si el día ya ha llegado, ocultamos el inicio y mostramos la carta
     document.getElementById('inicio').style.display = 'none';
     mostrarCarta(numDia);
-    
+
     // Opcional: limpiar el input del buscador
     input.value = '';
 }
