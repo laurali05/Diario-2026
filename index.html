@@ -112,8 +112,16 @@
 
         <div class="grid-galeria">
             <!-- Foto 1 -->
-            <div class="bloque-foto">
-                <img src="imagenes/nosotros.jpeg" alt="Nosotros" class="foto-galeria">
+            <div class="bloque-foto foto-interactiva" data-dia="1" onclick="abrirCartaDesdeImagen(1)">
+                <div class="contenedor-imagen-bloqueada">
+                    <img src="imagenes/nosotros.jpeg" alt="Foto secreta" class="foto-galeria">
+                    <!-- Capa oculta que tapará la foto si está bloqueada -->
+                    <div class="capa-candado">
+                        <span>🔒</span>
+                        <p>Secretito...</p>
+                    </div>
+                </div>
+                <p class="pie-foto">(Disponible muy pronto)</p>
             </div>
             <!-- Foto 2 -->
             <div class="bloque-foto foto-interactiva" data-dia="3" onclick="abrirCartaDesdeImagen(3)">
