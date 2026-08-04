@@ -437,59 +437,49 @@ html {
     margin-top: 30px;
 }
 
-.foto-galeria {
-    width: 100%;
-    max-width: 230px;
-    height: 230px;
-    object-fit: cover; /* Ajusta la imagen sin deformarla */
-    border: 10px solid white;
+.contenedor-imagen-bloqueada {
+    position: relative;
+    overflow: hidden;
+    display: block; /* Cambiado a block para evitar desfases de línea */
+    border: 10px solid white; /* El marco Polaroid pasa al contenedor */
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.foto-galeria {
+    width: 230px;
+    height: 230px;
+    object-fit: cover;
+    display: block; /* Elimina espacio en blanco inferior de las imágenes */
+    border: none; /* Quitamos el borde individual para que no duplique */
     transition: transform 0.3s ease;
 }
 
-.foto-galeria:hover {
-    transform: scale(1.05) rotate(1deg);
-}
-
-.foto-interactiva {
-    cursor: pointer;
-}
-
-.foto-interactiva:hover .foto-galeria {
-    transform: scale(1.05) rotate(1deg);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-/* FOTO DESBLOQUEADA */
 .foto-interactiva {
     cursor: pointer;
     position: relative;
     transition: all 0.3s ease;
 }
 
-/* CONTENEDOR DE LA IMAGEN */
-.contenedor-imagen-bloqueada {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
+.foto-interactiva:hover .contenedor-imagen-bloqueada {
+    transform: scale(1.05) rotate(1deg);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* CAPA OSCURA Y TOTALMENTE OPACA QUE OCULTA LA FOTO */
+/* CAPA OPACA SOLO PARA FOTOS BLOQUEADAS */
 .capa-candado {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #eee8d5; /* Mismo tono crema del tema */
-    display: none; /* Oculta por defecto */
+    background-color: #eee8d5;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     color: #5b3e2b;
     font-size: 2rem;
     box-sizing: border-box;
-    border: 10px solid white; /* Mantiene el marco polaroid */
 }
 
 .capa-candado p {
@@ -501,15 +491,13 @@ html {
 /* CUANDO LA FOTO ESTÁ BLOQUEADA */
 .foto-interactiva.foto-bloqueada {
     cursor: not-allowed;
-    pointer-events: none; /* Impide clics */
+    pointer-events: none;
 }
 
-/* Muestra la capa opaca sobre la foto e impide que se distinga */
 .foto-interactiva.foto-bloqueada .capa-candado {
     display: flex;
 }
 
-/* Oscurece/oculta la foto real por si acaso */
 .foto-interactiva.foto-bloqueada .foto-galeria {
     visibility: hidden;
 }
