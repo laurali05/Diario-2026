@@ -116,16 +116,30 @@
                 <img src="imagenes/nosotros.jpeg" alt="Nosotros" class="foto-galeria">
             </div>
             <!-- Foto 2 -->
-            <div class="bloque-foto foto-interactiva"  data-dia="3" onclick="abrirCartaDesdeImagen(3)">
-                <img src="imagenes/graduacion.jpg" alt="Carta 3" class="foto-galeria">
-                <p class="pie-foto">Nuestro primer paso haca un futuro juntos </p>
-            </div> 
+            <div class="bloque-foto foto-interactiva" data-dia="3" onclick="abrirCartaDesdeImagen(3)">
+                <div class="contenedor-imagen-bloqueada">
+                    <img src="imagenes/graduacion.jpg" alt="Foto secreta" class="foto-galeria">
+                    <!-- Capa oculta que tapará la foto si está bloqueada -->
+                    <div class="capa-candado">
+                        <span>🔒</span>
+                        <p>Secretito...</p>
+                    </div>
+                </div>
+                <p class="pie-foto">(Disponible muy pronto)</p>
+            </div>
 
-            <!-- Foto 2: Redirige a la Carta 5 (ejemplo)
+        </div>
+        <!-- Foto 2: Redirige a la Carta 5 (ejemplo)
             <div class="bloque-foto foto-interactiva" data-dia="5" onclick="abrirCartaDesdeImagen(5)">
-                <img src="imagenes/foto2.jpeg" alt="Carta 5" class="foto-galeria">
-                <p class="pie-foto">Nuestro viaje juntos (Carta 5)</p>
-            </div> -->
+                    <div class="contenedor-imagen-bloqueada">
+                        <img src="imagenes/foto2.jpeg" alt="Foto secreta" class="foto-galeria">
+                        <div class="capa-candado">
+                            <span>🔒</span>
+                            <p>Secretito...</p>
+                        </div>
+                    </div>
+                    <p class="pie-foto">Carta 5 (Disponible muy pronto)</p>
+                </div> -->
 
         </div>
     </section>
