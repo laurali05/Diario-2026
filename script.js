@@ -351,19 +351,42 @@ window.addEventListener('DOMContentLoaded', () => {
 // 15. ABRIR CARTA DESDE LA GALERÍA DE IMÁGENES
 function abrirCartaDesdeImagen(diaNum) {
     const hoy = calcularDiaActual();
+    const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
 
-    // 1. Comprobar si la carta de esa foto ya está disponible
-    if (diaNum > hoy) {
-        alert(`🔒 La carta del día ${diaNum} vinculada a esta foto aún no está disponible.`);
+    // Si NO estás en local y la carta es de un día futuro, bloqueamos el clic
+    if (!esLocal && diaNum > hoy) {
+        alert(`🔒 La foto y la carta del día ${diaNum} aún no están disponibles.`);
         return;
     }
 
-    // 2. Ocultar la sección de imágenes
+    // Ocultar la galería de imágenes y abrir la carta
     const seccionImagenes = document.getElementById('imagenes');
     if (seccionImagenes) {
         seccionImagenes.style.display = 'none';
     }
 
-    // 3. Abrir la pantalla de lectura con la carta elegida
     mostrarCarta(diaNum);
 }
+
+// 16. BLOQUEAR FOTOS FUTURAS VISUALMENTE
+function actualizarGaleriaFotos() {
+    const hoy = calcularDiaActual();
+    const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+
+    // Seleccionamos todos los bloques de fotos que tengan un número de día
+    const fotos = document.querySelectorAll('.foto-interactiva');
+
+    fotos.forEach(bloque => {
+        const diaNum = parseInt(bloque.getAttribute('data-dia'), 10);
+
+        // Si NO estamos en local y el día aún no ha llegado
+        if (!esLocal && diaNum > hoy) {
+            bloque.classList.add('foto-bloqueada');
+        } else {
+            bloque.classList.remove('foto-bloqueada');
+        }
+    });
+}
+
+// Ejecutar al cargar la página y al cambiar de sección
+window.addEventListener('DOMContentLoaded', actualizarGaleriaFotos);
