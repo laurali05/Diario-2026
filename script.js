@@ -88,7 +88,6 @@ function generarIndice() {
 }
 
 // 6. MOSTRAR CARTA
-// 5. MOSTRAR CARTA (CON MODO ADMINISTRADORA PARA LOCAL)
 async function mostrarCarta(id) {
     const diaNum = parseInt(id, 10);
     const hoy = calcularDiaActual();
