@@ -88,42 +88,56 @@ function generarIndice() {
 }
 
 // 6. MOSTRAR CARTA
+// 5. MOSTRAR CARTA (CON MODO ADMINISTRADORA PARA LOCAL)
 async function mostrarCarta(id) {
-    cartaActualId = id;
+    const diaNum = parseInt(id, 10);
+    const hoy = calcularDiaActual();
 
-    // Ocultamos el índice y mostramos la lectura
-    document.getElementById('cartas').style.display = 'none';
-    document.getElementById('lectura').style.display = 'block';
-
-    // Actualizamos URL
-    const url = new URL(window.location.href);
-    url.searchParams.set('dia', id);
-    window.history.pushState({ id: id }, '', url.href);
-
-    // Dentro de la función mostrarCarta(id):
+    // Detectamos si estás trabajando en local (Live Server en tu VS Code)
     const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
 
+    // Si NO estás en local y el día aún no ha llegado, bloqueamos el acceso
     if (!esLocal && diaNum > hoy) {
         alert(`🔒 La carta del día ${diaNum} aún no está disponible.`);
+        verSeccion('cartas');
         return;
     }
-    // Titulo y contenido de la carta
-    document.getElementById('titulo-carta').innerText = "Carta " + id;
+
+    // 1. Ocultamos el índice de cartas y mostramos la pantalla de lectura
+    const seccionCartas = document.getElementById('cartas');
+    const seccionLectura = document.getElementById('lectura');
+    const seccionImagenes = document.getElementById('imagenes');
+
+    if (seccionCartas) seccionCartas.style.display = 'none';
+    if (seccionImagenes) seccionImagenes.style.display = 'none';
+    if (seccionLectura) seccionLectura.style.display = 'block';
+
+    // 2. Actualizamos la URL con el día seleccionado
+    const url = new URL(window.location.href);
+    url.searchParams.set('dia', diaNum);
+    window.history.pushState({ id: diaNum }, '', url.href);
+
+    // 3. Preparar el título y texto provisional de carga
+    document.getElementById('titulo-carta').innerText = "Carta " + diaNum;
     const texto = document.getElementById('texto-carta');
     texto.innerText = "Abriendo el sobre... 💌";
 
-    // Cargar los comentarios guardados de esta carta
-    cargarComentarios(id);
+    // 4. Cargar los comentarios de Supabase si la función existe
+    if (typeof cargarComentarios === 'function') {
+        cargarComentarios(diaNum);
+    }
 
+    // 5. Cargar el contenido del archivo .txt
     try {
-        const respuesta = await fetch(`cartas/${id}.txt`);
-        if (!respuesta.ok) throw new Error();
+        const respuesta = await fetch(`cartas/${diaNum}.txt`);
+        if (!respuesta.ok) throw new Error("Archivo no encontrado");
         const contenido = await respuesta.text();
         texto.innerText = contenido;
     } catch (error) {
-        texto.innerText = "Todavía no hay carta para este día. ❤️";
+        texto.innerText = `Todavía no hay carta creada para este día (${diaNum}.txt). ❤️`;
     }
 }
+
 
 // 7. ENVÍO DE COMENTARIOS VÍA AJAX (Sin recargar la página)
 async function cargarComentarios(diaId) {
