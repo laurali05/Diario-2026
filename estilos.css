@@ -505,3 +505,31 @@ html {
 .foto-interactiva.foto-bloqueada .foto-galeria {
     visibility: hidden;
 }
+
+/* FOTO INSERTA DENTRO DE LA CARTA */
+.bloque-foto-carta {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.foto-carta-clickable {
+    max-width: 85%;
+    max-height: 300px;
+    object-fit: cover;
+    border: 8px solid white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.foto-carta-clickable:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+}
+
+.pie-foto-carta {
+    font-size: 0.85rem;
+    color: #a47e6a;
+    margin-top: 6px;
+    font-style: italic;
+}

@@ -87,22 +87,20 @@ function generarIndice() {
     }
 }
 
-// 6. MOSTRAR CARTA
+// 6. MOSTRAR CARTA (CON SOPORTE PARA IMÁGENES DENTRO DE LA CARTA)
 async function mostrarCarta(id) {
     const diaNum = parseInt(id, 10);
     const hoy = calcularDiaActual();
-
-    // Detectamos si estás trabajando en local (Live Server en tu VS Code)
+    
     const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
 
-    // Si NO estás en local y el día aún no ha llegado, bloqueamos el acceso
     if (!esLocal && diaNum > hoy) {
         alert(`🔒 La carta del día ${diaNum} aún no está disponible.`);
         verSeccion('cartas');
         return;
     }
 
-    // 1. Ocultamos el índice de cartas y mostramos la pantalla de lectura
+    // 1. Ocultar el índice/galería y mostrar lectura
     const seccionCartas = document.getElementById('cartas');
     const seccionLectura = document.getElementById('lectura');
     const seccionImagenes = document.getElementById('imagenes');
@@ -111,27 +109,53 @@ async function mostrarCarta(id) {
     if (seccionImagenes) seccionImagenes.style.display = 'none';
     if (seccionLectura) seccionLectura.style.display = 'block';
 
-    // 2. Actualizamos la URL con el día seleccionado
+    // 2. Actualizar la URL
     const url = new URL(window.location.href);
     url.searchParams.set('dia', diaNum);
     window.history.pushState({ id: diaNum }, '', url.href);
 
-    // 3. Preparar el título y texto provisional de carga
+    // 3. Preparar el título y el área del pergamino
     document.getElementById('titulo-carta').innerText = "Carta " + diaNum;
     const texto = document.getElementById('texto-carta');
     texto.innerText = "Abriendo el sobre... 💌";
 
-    // 4. Cargar los comentarios de Supabase si la función existe
+    // 4. Cargar comentarios
     if (typeof cargarComentarios === 'function') {
         cargarComentarios(diaNum);
     }
 
-    // 5. Cargar el contenido del archivo .txt
+    // 5. Cargar la carta y buscar si tiene foto asociada
     try {
         const respuesta = await fetch(`cartas/${diaNum}.txt`);
         if (!respuesta.ok) throw new Error("Archivo no encontrado");
         const contenido = await respuesta.text();
-        texto.innerText = contenido;
+
+        // Limpiamos contenido anterior
+        texto.innerHTML = "";
+
+        // Comprobamos si existe una foto para esta carta (ejemplo: imagenes/nosotros.jpeg o imagenes/carta-1.jpg)
+        // Mapea aquí el nombre de tus imágenes según el número de carta
+        const fotosPorCarta = {
+            1: "imagenes/nosotros.jpeg",
+            3: "imagenes/graduacion.jpg"
+            // Puedes añadir aquí más: 5: "imagenes/viaje.jpg", etc.
+        };
+
+        if (fotosPorCarta[diaNum]) {
+            const contenedorFoto = document.createElement('div');
+            contenedorFoto.className = 'bloque-foto-carta';
+            contenedorFoto.innerHTML = `
+                <img src="${fotosPorCarta[diaNum]}" alt="Foto Carta ${diaNum}" class="foto-carta-clickable" onclick="verSeccion('imagenes')">
+                <p class="pie-foto-carta">✨ Pulsa en la foto para ir a la galería</p>
+            `;
+            texto.appendChild(contenedorFoto);
+        }
+
+        // Añadimos el texto del archivo .txt debajo
+        const parrafoTexto = document.createElement('p');
+        parrafoTexto.innerText = contenido;
+        texto.appendChild(parrafoTexto);
+
     } catch (error) {
         texto.innerText = `Todavía no hay carta creada para este día (${diaNum}.txt). ❤️`;
     }
