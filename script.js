@@ -90,6 +90,9 @@ function generarIndice() {
 // 6. MOSTRAR CARTA (CON SOPORTE PARA IMÁGENES DENTRO DE LA CARTA)
 async function mostrarCarta(id) {
     const diaNum = parseInt(id, 10);
+    
+    cartaActualId = diaNum;
+    
     const hoy = calcularDiaActual();
     
     const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
