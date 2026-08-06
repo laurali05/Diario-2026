@@ -611,21 +611,22 @@ html {
     text-align: left;
 }
 
-/* Columna de la letra original */
+/* Columna de la letra original (Misma tipografía habitual pero en negrita) */
 .columna-original {
-    font-family: 'Playfair Display', serif;
+    font-family: inherit; /* Hereda la fuente habitual de las cartas */
+    font-weight: bold;    /* Aplica negrita */
     color: #5b3e2b;
     border-right: 1px solid #d4a373;
     padding-right: 15px;
-    white-space: pre-wrap; /* Mantiene los saltos de línea */
+    white-space: pre-wrap;
 }
 
-/* Columna de la traducción */
+/* Columna de la traducción (Misma tipografía habitual normal, sin negrita) */
 .columna-traduccion {
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.25rem;
-    color: #8c6d58;
-    white-space: pre-wrap; /* Mantiene los saltos de línea */
+    font-family: inherit; /* Hereda la fuente habitual de las cartas */
+    font-weight: normal;  /* Sin negrita */
+    color: #5b3e2b;
+    white-space: pre-wrap;
 }
 
 /* Ajuste automático para móviles */
