@@ -87,14 +87,12 @@ function generarIndice() {
     }
 }
 
-// 6. MOSTRAR CARTA (CON SOPORTE PARA IMÁGENES DENTRO DE LA CARTA)
+// 6. MOSTRAR CARTA (CON FOTOS Y AUDIOS)
 async function mostrarCarta(id) {
     const diaNum = parseInt(id, 10);
-    
     cartaActualId = diaNum;
 
     const hoy = calcularDiaActual();
-    
     const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
 
     if (!esLocal && diaNum > hoy) {
@@ -103,46 +101,39 @@ async function mostrarCarta(id) {
         return;
     }
 
-    // 1. Ocultar el índice/galería y mostrar lectura
     const seccionCartas = document.getElementById('cartas');
     const seccionLectura = document.getElementById('lectura');
     const seccionImagenes = document.getElementById('imagenes');
+    const seccionMusica = document.getElementById('musica');
 
     if (seccionCartas) seccionCartas.style.display = 'none';
     if (seccionImagenes) seccionImagenes.style.display = 'none';
+    if (seccionMusica) seccionMusica.style.display = 'none';
     if (seccionLectura) seccionLectura.style.display = 'block';
 
-    // 2. Actualizar la URL
     const url = new URL(window.location.href);
     url.searchParams.set('dia', diaNum);
     window.history.pushState({ id: diaNum }, '', url.href);
 
-    // 3. Preparar el título y el área del pergamino
     document.getElementById('titulo-carta').innerText = "Carta " + diaNum;
     const texto = document.getElementById('texto-carta');
     texto.innerText = "Abriendo el sobre... 💌";
 
-    // 4. Cargar comentarios
     if (typeof cargarComentarios === 'function') {
         cargarComentarios(diaNum);
     }
 
-    // 5. Cargar la carta y buscar si tiene foto asociada
     try {
         const respuesta = await fetch(`cartas/${diaNum}.txt`);
         if (!respuesta.ok) throw new Error("Archivo no encontrado");
         const contenido = await respuesta.text();
 
-        // Limpiamos contenido anterior
         texto.innerHTML = "";
 
-        // Comprobamos si existe una foto para esta carta (ejemplo: imagenes/nosotros.jpeg o imagenes/carta-1.jpg)
-        // Mapea aquí el nombre de tus imágenes según el número de carta
+        // 1. ASOCIACIÓN DE FOTOS
         const fotosPorCarta = {
             1: "imagenes/nosotros.jpeg",
-            3: "imagenes/graduacion.jpg",
-            4: "imagenes/Sudoku 1.jpg"
-            // Puedes añadir aquí más: 5: "imagenes/viaje.jpg", etc.
+            3: "imagenes/graduacion.jpg"
         };
 
         if (fotosPorCarta[diaNum]) {
@@ -150,11 +141,29 @@ async function mostrarCarta(id) {
             contenedorFoto.className = 'bloque-foto-carta';
             contenedorFoto.innerHTML = `
                 <img src="${fotosPorCarta[diaNum]}" alt="Foto Carta ${diaNum}" class="foto-carta-clickable" onclick="verSeccion('imagenes')">
+                <p class="pie-foto-carta">✨ Pulsa en la foto para ir a la galería</p>
             `;
             texto.appendChild(contenedorFoto);
         }
 
-        // Añadimos el texto del archivo .txt debajo
+        // 2. ASOCIACIÓN DE AUDIOS
+        const audiosPorCarta = {
+            1: "audios/audio-1.mp3",
+            3: "audios/audio-3.mp3"
+        };
+
+        if (audiosPorCarta[diaNum]) {
+            const contenedorAudio = document.createElement('div');
+            contenedorAudio.className = 'bloque-audio-carta';
+            contenedorAudio.innerHTML = `
+                <p class="titulo-audio-carta">🎧 Escucha la nota de voz para hoy:</p>
+                <audio controls src="${audiosPorCarta[diaNum]}" class="reproductor-carta"></audio>
+                <button onclick="verSeccion('musica')" class="btn-ir-seccion">🎶 Ver todos los audios</button>
+            `;
+            texto.appendChild(contenedorAudio);
+        }
+
+        // 3. TEXTO DE LA CARTA
         const parrafoTexto = document.createElement('p');
         parrafoTexto.innerText = contenido;
         texto.appendChild(parrafoTexto);
