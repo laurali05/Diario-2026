@@ -166,7 +166,7 @@ async function mostrarCarta(id) {
                         <strong>${info.titulo}</strong>
                         <p>${info.artista}</p>
                     </div>
-                <button onclick="verSeccion('musica')" class="btn-ir-seccion">🎶 Ver en la sección de música</button>
+                <button onclick="verSeccion('musica')" class="btn-ir-seccion">🎶 </button>
                 </div>
                 <audio controls src="${info.archivoAudio}" class="reproductor-cancion-carta"></audio>
             `;
