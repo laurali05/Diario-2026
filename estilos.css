@@ -653,43 +653,84 @@ html {
     white-space: pre-wrap;
 }
 
-/* TARJETA DE CANCIÓN CON REPRODUCTOR EN LA CARTA */
+/* TARJETA DE CANCIÓN EN LA CARTA (A un lado) */
 .tarjeta-cancion-reproductor {
     background-color: #ffffff;
     border: 1px solid #d4a373;
-    padding: 18px;
+    padding: 15px 20px;
     border-radius: 20px;
     margin: 20px auto 30px auto;
-    max-width: 420px;
+    max-width: 550px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cabecera-cancion-linea {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Texto a la izquierda, botón a la derecha */
+    gap: 15px;
 }
 
 .info-cancion-top {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 12px;
-}
-
-.icono-nota {
-    font-size: 2rem;
-}
-
-.info-cancion-top strong {
-    color: #5b3e2b;
-    font-size: 1.1rem;
-    display: block;
-}
-
-.info-cancion-top p {
-    margin: 0;
-    color: #8c6d58;
-    font-size: 0.9rem;
+    gap: 12px;
+    text-align: left;
 }
 
 .reproductor-cancion-carta {
     width: 100%;
-    margin-bottom: 12px;
+}
+
+/* BOTÓN COMPACTO A UN LADO */
+.btn-ir-seccion, .btn-ir-carta {
+    background-color: #ffc1d1;
+    color: #5b3e2b;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.8rem;
+    white-space: nowrap; /* Impide que el texto del botón se rompa en dos líneas */
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.btn-ir-seccion:hover, .btn-ir-carta:hover {
+    background-color: #ff85a2;
+}
+
+/* CAJA DE AUDIOS EN LA SECCIÓN DE MÚSICA (Audio y botón alineados en horizontal) */
+.caja-audio {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 550px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.info-audio-izquierda {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+}
+
+.info-audio-izquierda h4 {
+    margin: 0 0 8px 0;
+    color: #5b3e2b;
+    font-family: 'Playfair Display', serif;
+}
+
+.info-audio-izquierda audio {
+    width: 100%;
 }
