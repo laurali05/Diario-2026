@@ -534,7 +534,11 @@ html {
     font-style: italic;
 }
 
-/* SECCIÓN DE AUDIOS */
+/* ==========================================
+   SECCIÓN DE MÚSICA Y REPRODUCTORES EN CARTAS
+   ========================================== */
+
+/* Contenedor principal de la pestaña Música */
 .lista-audios {
     display: flex;
     flex-direction: column;
@@ -543,44 +547,80 @@ html {
     margin-top: 30px;
 }
 
+/* Tarjetas (se aplican tanto en la carta como en la sección de música) */
+.tarjeta-cancion-reproductor, 
 .caja-audio {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    background-color: #ffffff;
+    border: 1px solid #d4a373;
+    padding: 18px 20px;
+    border-radius: 20px;
+    margin: 20px auto 30px auto;
     width: 100%;
-    max-width: 450px;
-    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-sizing: border-box;
 }
 
-.caja-audio h4 {
-    margin-top: 0;
+/* Línea superior: Título y Artista a la izquierda | Botón a la derecha */
+.cabecera-cancion-linea {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.info-cancion-top {
+    text-align: left;
+}
+
+.info-cancion-top strong, 
+.info-cancion-top h4 {
     color: #5b3e2b;
+    font-size: 1.05rem;
+    margin: 0;
+    display: block;
     font-family: 'Playfair Display', serif;
 }
 
-.caja-audio audio {
-    width: 100%;
-    margin: 10px 0;
+.info-cancion-top p {
+    margin: 3px 0 0 0;
+    color: #8c6d58;
+    font-size: 0.85rem;
 }
 
-.btn-ir-carta, .btn-ir-seccion {
+/* Barra de audio (ocupa el 100% de la tarjeta justo debajo) */
+.reproductor-cancion-carta, 
+.reproductor-carta,
+.caja-audio audio {
+    width: 100% !important;
+    display: block !important;
+}
+
+/* Botones de navegación */
+.btn-ir-seccion, 
+.btn-ir-carta {
     background-color: #ffc1d1;
     color: #5b3e2b;
     border: none;
-    padding: 8px 16px;
+    padding: 8px 14px;
     border-radius: 20px;
     font-weight: bold;
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
     transition: all 0.3s ease;
+    flex-shrink: 0;
 }
 
-.btn-ir-carta:hover, .btn-ir-seccion:hover {
+.btn-ir-seccion:hover, 
+.btn-ir-carta:hover {
     background-color: #ff85a2;
 }
 
-/* REPRODUCTOR DENTRO DE LA CARTA */
+/* Notas de voz simples dentro de la carta */
 .bloque-audio-carta {
     background-color: #fdf6e3;
     padding: 15px;
@@ -597,12 +637,12 @@ html {
     font-weight: bold;
 }
 
-.reproductor-carta {
-    width: 100%;
-    margin-bottom: 10px;
-}
 
-/* CONTENEDOR A DOS COLUMNAS PARA CANCIONES */
+/* ==========================================
+   LETRAS DE CANCIONES Y REFLEXIONES
+   ========================================== */
+
+/* Contenedor a 2 columnas (Original vs Traducción) */
 .contenedor-dos-columnas {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -611,41 +651,27 @@ html {
     text-align: left;
 }
 
-/* Columna de la letra original (Misma tipografía habitual pero en negrita) */
 .columna-original {
-    font-family: inherit; /* Hereda la fuente habitual de las cartas */
-    font-weight: bold;    /* Aplica negrita */
+    font-family: inherit;
+    font-weight: bold;
     color: #5b3e2b;
     border-right: 1px solid #d4a373;
     padding-right: 15px;
     white-space: pre-wrap;
 }
 
-/* Columna de la traducción (Misma tipografía habitual normal, sin negrita) */
 .columna-traduccion {
-    font-family: inherit; /* Hereda la fuente habitual de las cartas */
-    font-weight: normal;  /* Sin negrita */
+    font-family: inherit;
+    font-weight: normal;
     color: #5b3e2b;
     white-space: pre-wrap;
 }
 
-/* Ajuste automático para móviles */
-@media (max-width: 600px) {
-    .contenedor-dos-columnas {
-        grid-template-columns: 1fr; /* Pasa a 1 columna en pantallas pequeñas */
-    }
-    .columna-original {
-        border-right: none;
-        border-bottom: 1px solid #d4a373;
-        padding-bottom: 15px;
-    }
-}
-
-/* TEXTO PERSONAL DEBAJO DE LA CANCIÓN */
+/* Opinión/carta personal al final de la canción */
 .texto-opinion-carta {
     margin-top: 35px;
     padding-top: 25px;
-    border-top: 1px dashed #d4a373; /* Línea discontinua elegante */
+    border-top: 1px dashed #d4a373;
     font-size: 1.05rem;
     line-height: 1.8;
     color: #5b3e2b;
@@ -653,68 +679,14 @@ html {
     white-space: pre-wrap;
 }
 
-/* TARJETA DE CANCIÓN EN LA CARTA */
-.tarjeta-cancion-reproductor {
-    background-color: #ffffff;
-    border: 1px solid #d4a373;
-    padding: 16px 20px;
-    border-radius: 20px;
-    margin: 20px auto 30px auto;
-    max-width: 500px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-/* LÍNEA SUPERIOR: Título/Artista a la izquierda, Botón a la derecha */
-.cabecera-cancion-linea {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    width: 100%;
-}
-
-.info-cancion-top {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-align: left;
-}
-
-.info-cancion-top strong {
-    color: #5b3e2b;
-    font-size: 1.05rem;
-    display: block;
-}
-
-.info-cancion-top p {
-    margin: 0;
-    color: #8c6d58;
-    font-size: 0.85rem;
-}
-
-/* REPRODUCTOR DE AUDIO justo debajo de la cabecera */
-.reproductor-cancion-carta {
-    width: 100%;
-}
-
-/* BOTÓN A LA DERECHA */
-.btn-ir-seccion {
-    background-color: #ffc1d1;
-    color: #5b3e2b;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 0.8rem;
-    white-space: nowrap;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-}
-
-.btn-ir-seccion:hover {
-    background-color: #ff85a2;
+/* Responsive para pantallas de móvil */
+@media (max-width: 600px) {
+    .contenedor-dos-columnas {
+        grid-template-columns: 1fr;
+    }
+    .columna-original {
+        border-right: none;
+        border-bottom: 1px solid #d4a373;
+        padding-bottom: 15px;
+    }
 }
