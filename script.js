@@ -87,7 +87,7 @@ function generarIndice() {
     }
 }
 
-// 6. MOSTRAR CARTA (CON FOTOS Y AUDIOS)
+// 6. MOSTRAR CARTA (CON CANCIÓN ESCUCHABLE Y DOS COLUMNAS)
 async function mostrarCarta(id) {
     const diaNum = parseInt(id, 10);
     cartaActualId = diaNum;
@@ -130,7 +130,7 @@ async function mostrarCarta(id) {
 
         texto.innerHTML = "";
 
-        // 1. ASOCIACIÓN DE FOTOS
+        // 1. ASOCIACIÓN DE FOTOS (Al principio de la carta)
         const fotosPorCarta = {
             1: "imagenes/nosotros.jpeg",
             3: "imagenes/graduacion.jpg"
@@ -141,14 +141,41 @@ async function mostrarCarta(id) {
             contenedorFoto.className = 'bloque-foto-carta';
             contenedorFoto.innerHTML = `
                 <img src="${fotosPorCarta[diaNum]}" alt="Foto Carta ${diaNum}" class="foto-carta-clickable" onclick="verSeccion('imagenes')">
+                <p class="pie-foto-carta">✨ Pulsa en la foto para ir a la galería</p>
             `;
             texto.appendChild(contenedorFoto);
         }
 
-        // 2. ASOCIACIÓN DE AUDIOS
+        // 2. CANCIÓN DEDICADA CON REPRODUCTOR DE AUDIO
+        const cancionesPorCarta = {
+            5: { 
+                titulo: "Il fillo Rosso", 
+                artista: "Alfa",
+                archivoAudio: "audios/il fillo rosso- Alfa.mp3" // Archivo del audio
+            }
+        };
+
+        if (cancionesPorCarta[diaNum]) {
+            const info = cancionesPorCarta[diaNum];
+            const tarjetaCancion = document.createElement('div');
+            tarjetaCancion.className = 'tarjeta-cancion-reproductor';
+            tarjetaCancion.innerHTML = `
+                <div class="info-cancion-top">
+                    <span class="icono-nota">🎵</span>
+                    <div>
+                        <strong>${info.titulo}</strong>
+                        <p>${info.artista}</p>
+                    </div>
+                </div>
+                <audio controls src="${info.archivoAudio}" class="reproductor-cancion-carta"></audio>
+                <button onclick="verSeccion('musica')" class="btn-ir-seccion">🎶 Ver en la sección de música</button>
+            `;
+            texto.appendChild(tarjetaCancion);
+        }
+
+        // 3. AUDIOS / NOTAS DE VOZ (Opcionales)
         const audiosPorCarta = {
-            1: "audios/audio-1.mp3",
-            3: "audios/audio-3.mp3"
+            1: "audios/audio-1.mp3"
         };
 
         if (audiosPorCarta[diaNum]) {
@@ -157,17 +184,14 @@ async function mostrarCarta(id) {
             contenedorAudio.innerHTML = `
                 <p class="titulo-audio-carta">🎧 Escucha la nota de voz para hoy:</p>
                 <audio controls src="${audiosPorCarta[diaNum]}" class="reproductor-carta"></audio>
-                <button onclick="verSeccion('musica')" class="btn-ir-seccion">🎶 Ver todos los audios</button>
             `;
             texto.appendChild(contenedorAudio);
         }
 
-        // 3. TEXTO DE LA CARTA
-        // DETECTAR COLUMNAS Y TEXTO POSTERIOR
+        // 4. LETRA Y TRADUCCIÓN A DOS COLUMNAS + OPINIÓN PERSONAL
         const partes = contenido.split('---');
 
         if (partes.length >= 2) {
-            // 1. Crear las dos columnas para la canción
             const contenedorColumnas = document.createElement('div');
             contenedorColumnas.className = 'contenedor-dos-columnas';
 
@@ -177,7 +201,6 @@ async function mostrarCarta(id) {
             `;
             texto.appendChild(contenedorColumnas);
 
-            // 2. Si hay una tercera parte (tu opinión/carta normal), la ponemos debajo
             if (partes[2]) {
                 const opinionCarta = document.createElement('div');
                 opinionCarta.className = 'texto-opinion-carta';
@@ -185,7 +208,6 @@ async function mostrarCarta(id) {
                 texto.appendChild(opinionCarta);
             }
         } else {
-            // Si es una carta normal sin '---', se muestra como siempre
             const parrafoTexto = document.createElement('p');
             parrafoTexto.innerText = contenido;
             texto.appendChild(parrafoTexto);
