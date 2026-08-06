@@ -135,7 +135,6 @@ async function mostrarCarta(id) {
             1: "imagenes/nosotros.jpeg",
             3: "imagenes/graduacion.jpg",
             4: "imagenes/Sudoku 1.jpg",
-
         };
 
         if (fotosPorCarta[diaNum]) {
@@ -143,8 +142,7 @@ async function mostrarCarta(id) {
             contenedorFoto.className = 'bloque-foto-carta';
             contenedorFoto.innerHTML = `
                 <img src="${fotosPorCarta[diaNum]}" alt="Foto Carta ${diaNum}" class="foto-carta-clickable" onclick="verSeccion('imagenes')">
-                <p class="pie-foto-carta">✨ Pulsa en la foto para ir a la galería</p>
-            `;
+                `;
             texto.appendChild(contenedorFoto);
         }
 
