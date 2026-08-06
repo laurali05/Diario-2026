@@ -292,12 +292,23 @@ function escapeHTML(str) {
     );
 }
 
-// 9. CALCULAR DÍA
+// 9. CALCULAR DÍA ACTUAL (Sincronizado con el servidor de Java)
 function calcularDiaActual() {
-    const fechaInicio = new Date('2026-08-03'); // Asegúrate de que esta fecha es la correcta
+    // Mes 7 es Agosto en JavaScript (Enero=0, Febrero=1... Agosto=7)
+    const fechaInicio = new Date(2026, 7, 3); 
     const hoy = new Date();
-    const diferencia = hoy - fechaInicio;
-    const diaActual = Math.floor(diferencia / (1000 * 60 * 60 * 24)) + 1;
+
+    // Normalizamos ambas fechas a las 00:00:00 locales para contar solo días naturales
+    fechaInicio.setHours(0, 0, 0, 0);
+    hoy.setHours(0, 0, 0, 0);
+
+    // Diferencia en días de calendario
+    const diferenciaMs = hoy.getTime() - fechaInicio.getTime();
+    const diasTranscurridos = Math.round(diferenciaMs / (1000 * 60 * 60 * 24));
+
+    // El primer día (03/08/2026) es el Día 1
+    const diaActual = diasTranscurridos + 1;
+
     return diaActual > 0 ? diaActual : 0;
 }
 
