@@ -19,24 +19,33 @@ function validarAcceso() {
 }
 
 // 3. NAVEGACIÓN ENTRE SECCIONES
-function verSeccion(id) {
-    // Ocultamos todas las secciones primero
-    const secciones = document.querySelectorAll('.pantalla');
-    secciones.forEach(s => s.style.display = 'none');
+function verSeccion(seccionId) {
+    // ... tu código de navegación ...
 
-    // Mostramos la que queremos
-    const seccion = document.getElementById(id);
-    if (seccion) {
-        seccion.style.display = 'block';
+    if (seccionId === 'musica') {
+        const hoy = calcularDiaActual();
+        const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+        
+        document.querySelectorAll('.caja-audio').forEach(caja => {
+            const diaAudio = parseInt(caja.getAttribute('data-dia'), 10);
+            const estaBloqueado = !esLocal && diaAudio > hoy;
 
-        if (id === 'planes') {
-            cargarPlanes();
-        }
+            const reproductor = caja.querySelector('audio');
+            const boton = caja.querySelector('button');
 
-        // Actualizar URL para secciones (opcional)
-        const url = new URL(window.location.href);
-        url.searchParams.set('seccion', id);
-        window.history.pushState({ seccion: id }, '', url.href);
+            if (estaBloqueado) {
+                caja.classList.add('bloqueado');
+                if (reproductor) reproductor.removeAttribute('controls'); // Desactiva la barra de reproducción
+                if (boton) boton.disabled = true;
+
+                if (!caja.querySelector('.capa-bloqueo-audio')) {
+                    const capa = document.createElement('div');
+                    capa.className = 'capa-bloqueo-audio';
+                    capa.innerHTML = `<span>🔒 Bloqueado </span>`;
+                    caja.appendChild(capa);
+                }
+            }
+        });
     }
 }
 
@@ -158,8 +167,13 @@ async function mostrarCarta(id) {
         if (cancionesPorCarta[diaNum]) {
             const info = cancionesPorCarta[diaNum];
             const tarjetaCancion = document.createElement('div');
-            tarjetaCancion.className = 'tarjeta-cancion-reproductor';
+            tarjetaCancion.className = `tarjeta-cancion-reproductor ${estaBloqueado ? 'bloqueado' : ''}`;
             tarjetaCancion.innerHTML = `
+            ${estaBloqueado ? `
+                    <div class="capa-bloqueo-audio">
+                        <span>🔒 Audio bloqueado</span>
+                    </div>
+                ` : ''}
                 <div class="cabecera-cancion-linea">
                     <div class="info-cancion-top">
                         <strong>${info.titulo}</strong>
@@ -170,21 +184,6 @@ async function mostrarCarta(id) {
                 <audio controls src="${info.archivoAudio}" class="reproductor-cancion-carta"></audio>
             `;
             texto.appendChild(tarjetaCancion);
-        }
-
-        // 3. AUDIOS / NOTAS DE VOZ (Opcionales)
-        const audiosPorCarta = {
-            1: "audios/audio-1.mp3"
-        };
-
-        if (audiosPorCarta[diaNum]) {
-            const contenedorAudio = document.createElement('div');
-            contenedorAudio.className = 'bloque-audio-carta';
-            contenedorAudio.innerHTML = `
-                <p class="titulo-audio-carta">🎧 Escucha la nota de voz para hoy:</p>
-                <audio controls src="${audiosPorCarta[diaNum]}" class="reproductor-carta"></audio>
-            `;
-            texto.appendChild(contenedorAudio);
         }
 
         // 4. LETRA Y TRADUCCIÓN A DOS COLUMNAS + OPINIÓN PERSONAL
