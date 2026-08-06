@@ -92,7 +92,7 @@ async function mostrarCarta(id) {
     const diaNum = parseInt(id, 10);
     
     cartaActualId = diaNum;
-    
+
     const hoy = calcularDiaActual();
     
     const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
@@ -140,7 +140,8 @@ async function mostrarCarta(id) {
         // Mapea aquí el nombre de tus imágenes según el número de carta
         const fotosPorCarta = {
             1: "imagenes/nosotros.jpeg",
-            3: "imagenes/graduacion.jpg"
+            3: "imagenes/graduacion.jpg",
+            4: "imagenes/Sudoku 1.jpg"
             // Puedes añadir aquí más: 5: "imagenes/viaje.jpg", etc.
         };
 
