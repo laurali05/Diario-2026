@@ -601,3 +601,53 @@ html {
     width: 100%;
     margin-bottom: 10px;
 }
+
+/* CONTENEDOR A DOS COLUMNAS PARA CANCIONES */
+.contenedor-dos-columnas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+/* Columna de la letra original */
+.columna-original {
+    font-family: 'Playfair Display', serif;
+    color: #5b3e2b;
+    border-right: 1px solid #d4a373;
+    padding-right: 15px;
+    white-space: pre-wrap; /* Mantiene los saltos de línea */
+}
+
+/* Columna de la traducción */
+.columna-traduccion {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.25rem;
+    color: #8c6d58;
+    white-space: pre-wrap; /* Mantiene los saltos de línea */
+}
+
+/* Ajuste automático para móviles */
+@media (max-width: 600px) {
+    .contenedor-dos-columnas {
+        grid-template-columns: 1fr; /* Pasa a 1 columna en pantallas pequeñas */
+    }
+    .columna-original {
+        border-right: none;
+        border-bottom: 1px solid #d4a373;
+        padding-bottom: 15px;
+    }
+}
+
+/* TEXTO PERSONAL DEBAJO DE LA CANCIÓN */
+.texto-opinion-carta {
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px dashed #d4a373; /* Línea discontinua elegante */
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #5b3e2b;
+    text-align: left;
+    white-space: pre-wrap;
+}

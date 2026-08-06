@@ -141,7 +141,6 @@ async function mostrarCarta(id) {
             contenedorFoto.className = 'bloque-foto-carta';
             contenedorFoto.innerHTML = `
                 <img src="${fotosPorCarta[diaNum]}" alt="Foto Carta ${diaNum}" class="foto-carta-clickable" onclick="verSeccion('imagenes')">
-                <p class="pie-foto-carta">✨ Pulsa en la foto para ir a la galería</p>
             `;
             texto.appendChild(contenedorFoto);
         }
@@ -164,9 +163,33 @@ async function mostrarCarta(id) {
         }
 
         // 3. TEXTO DE LA CARTA
-        const parrafoTexto = document.createElement('p');
-        parrafoTexto.innerText = contenido;
-        texto.appendChild(parrafoTexto);
+        // DETECTAR COLUMNAS Y TEXTO POSTERIOR
+        const partes = contenido.split('---');
+
+        if (partes.length >= 2) {
+            // 1. Crear las dos columnas para la canción
+            const contenedorColumnas = document.createElement('div');
+            contenedorColumnas.className = 'contenedor-dos-columnas';
+
+            contenedorColumnas.innerHTML = `
+                <div class="columna-original">${partes[0].trim()}</div>
+                <div class="columna-traduccion">${partes[1].trim()}</div>
+            `;
+            texto.appendChild(contenedorColumnas);
+
+            // 2. Si hay una tercera parte (tu opinión/carta normal), la ponemos debajo
+            if (partes[2]) {
+                const opinionCarta = document.createElement('div');
+                opinionCarta.className = 'texto-opinion-carta';
+                opinionCarta.innerText = partes[2].trim();
+                texto.appendChild(opinionCarta);
+            }
+        } else {
+            // Si es una carta normal sin '---', se muestra como siempre
+            const parrafoTexto = document.createElement('p');
+            parrafoTexto.innerText = contenido;
+            texto.appendChild(parrafoTexto);
+        }
 
     } catch (error) {
         texto.innerText = `Todavía no hay carta creada para este día (${diaNum}.txt). ❤️`;
