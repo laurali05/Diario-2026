@@ -161,7 +161,6 @@ async function mostrarCarta(id) {
             tarjetaCancion.className = 'tarjeta-cancion-reproductor';
             tarjetaCancion.innerHTML = `
                 <div class="info-cancion-top">
-                    <span class="icono-nota">🎵</span>
                     <div>
                         <strong>${info.titulo}</strong>
                         <p>${info.artista}</p>
