@@ -160,13 +160,12 @@ async function mostrarCarta(id) {
             const tarjetaCancion = document.createElement('div');
             tarjetaCancion.className = 'tarjeta-cancion-reproductor';
             tarjetaCancion.innerHTML = `
-            <div class="cabecera-cancion-linea">
-                <div class="info-cancion-top">
-                    <div>
+                <div class="cabecera-cancion-linea">
+                    <div class="info-cancion-top">
                         <strong>${info.titulo}</strong>
                         <p>${info.artista}</p>
                     </div>
-                <button onclick="verSeccion('musica')" class="btn-ir-seccion">🎶 </button>
+                    <button onclick="verSeccion('musica')" class="btn-ir-seccion">🎶 </button>
                 </div>
                 <audio controls src="${info.archivoAudio}" class="reproductor-cancion-carta"></audio>
             `;
