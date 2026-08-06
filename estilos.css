@@ -533,3 +533,71 @@ html {
     margin-top: 6px;
     font-style: italic;
 }
+
+/* SECCIÓN DE AUDIOS */
+.lista-audios {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.caja-audio {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.caja-audio h4 {
+    margin-top: 0;
+    color: #5b3e2b;
+    font-family: 'Playfair Display', serif;
+}
+
+.caja-audio audio {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.btn-ir-carta, .btn-ir-seccion {
+    background-color: #ffc1d1;
+    color: #5b3e2b;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.btn-ir-carta:hover, .btn-ir-seccion:hover {
+    background-color: #ff85a2;
+}
+
+/* REPRODUCTOR DENTRO DE LA CARTA */
+.bloque-audio-carta {
+    background-color: #fdf6e3;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    text-align: center;
+    border: 1px solid #d4a373;
+}
+
+.titulo-audio-carta {
+    font-size: 0.95rem;
+    color: #5b3e2b;
+    margin-top: 0;
+    font-weight: bold;
+}
+
+.reproductor-carta {
+    width: 100%;
+    margin-bottom: 10px;
+}
