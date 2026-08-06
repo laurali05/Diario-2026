@@ -133,7 +133,9 @@ async function mostrarCarta(id) {
         // 1. ASOCIACIÓN DE FOTOS (Al principio de la carta)
         const fotosPorCarta = {
             1: "imagenes/nosotros.jpeg",
-            3: "imagenes/graduacion.jpg"
+            3: "imagenes/graduacion.jpg",
+            4: "imagenes/Sudoku 1.jpg",
+
         };
 
         if (fotosPorCarta[diaNum]) {
@@ -148,8 +150,8 @@ async function mostrarCarta(id) {
 
         // 2. CANCIÓN DEDICADA CON REPRODUCTOR DE AUDIO
         const cancionesPorCarta = {
-            5: { 
-                titulo: "Il fillo Rosso", 
+            5: {
+                titulo: "Il fillo Rosso",
                 artista: "Alfa",
                 archivoAudio: "audios/il fillo rosso- Alfa.mp3" // Archivo del audio
             }
