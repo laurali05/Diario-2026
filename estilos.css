@@ -687,47 +687,4 @@ html {
         border-bottom: 1px solid #d4a373;
         padding-bottom: 15px;
     }
-}ç
-
-/* CAPA DE BLOQUEO PARA EL AUDIO */
-.tarjeta-cancion-reproductor.bloqueado, 
-.caja-audio.bloqueado {
-    position: relative;
-    overflow: hidden;
-    user-select: none;
-}
-
-/* Difumina todo el contenido interior del audio */
-.tarjeta-cancion-reproductor.bloqueado .cabecera-cancion-linea,
-.tarjeta-cancion-reproductor.bloqueado audio,
-.caja-audio.bloqueado .cabecera-cancion-linea,
-.caja-audio.bloqueado audio {
-    filter: blur(4px); /* Aplica el desenfoque */
-    pointer-events: none; /* Impide hacer clic o darle a reproducir */
-    opacity: 0.4;
-}
-
-/* Capa transparente superior con el texto y el candado */
-.capa-bloqueo-audio {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.75);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    border-radius: 20px;
-}
-
-.capa-bloqueo-audio span {
-    background-color: #5b3e2b;
-    color: #ffffff;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: bold;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
