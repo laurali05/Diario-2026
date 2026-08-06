@@ -652,3 +652,44 @@ html {
     text-align: left;
     white-space: pre-wrap;
 }
+
+/* TARJETA DE CANCIÓN CON REPRODUCTOR EN LA CARTA */
+.tarjeta-cancion-reproductor {
+    background-color: #ffffff;
+    border: 1px solid #d4a373;
+    padding: 18px;
+    border-radius: 20px;
+    margin: 20px auto 30px auto;
+    max-width: 420px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    text-align: center;
+}
+
+.info-cancion-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.icono-nota {
+    font-size: 2rem;
+}
+
+.info-cancion-top strong {
+    color: #5b3e2b;
+    font-size: 1.1rem;
+    display: block;
+}
+
+.info-cancion-top p {
+    margin: 0;
+    color: #8c6d58;
+    font-size: 0.9rem;
+}
+
+.reproductor-cancion-carta {
+    width: 100%;
+    margin-bottom: 12px;
+}
