@@ -295,7 +295,7 @@ function escapeHTML(str) {
 // 9. CALCULAR DÍA ACTUAL (Sincronizado con el servidor de Java)
 function calcularDiaActual() {
     // Mes 7 es Agosto en JavaScript (Enero=0, Febrero=1... Agosto=7)
-    const fechaInicio = new Date(2026, 7, 3); 
+    const fechaInicio = new Date(2026, 7, 2); 
     const hoy = new Date();
 
     // Normalizamos ambas fechas a las 00:00:00 locales para contar solo días naturales
