@@ -156,7 +156,7 @@ async function mostrarCarta(id) {
 
             8: {
                 titulo: "Et Prometo",
-                artista: "AlIvan Herzogfa",
+                artista: "Ivan Herzog",
                 archivoAudio: "audios/Ivan Herzog- Et prometo.mp3" // Archivo del audio
             }
         };
