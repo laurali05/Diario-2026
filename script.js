@@ -158,7 +158,7 @@ async function mostrarCarta(id) {
                 titulo: "Et Prometo",
                 artista: "Ivan Herzog",
                 archivoAudio: "audios/Ivan Herzog- Et prometo.mp3" // Archivo del audio
-            }
+            },
         };
 
         if (cancionesPorCarta[diaNum]) {
