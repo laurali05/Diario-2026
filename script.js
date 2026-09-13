@@ -172,21 +172,6 @@ async function mostrarCarta(id) {
             texto.appendChild(tarjetaCancion);
         }
 
-        // 3. AUDIOS / NOTAS DE VOZ (Opcionales)
-        const audiosPorCarta = {
-            1: "audios/audio-1.mp3"
-        };
-
-        if (audiosPorCarta[diaNum]) {
-            const contenedorAudio = document.createElement('div');
-            contenedorAudio.className = 'bloque-audio-carta';
-            contenedorAudio.innerHTML = `
-                <p class="titulo-audio-carta">🎧 Escucha la nota de voz para hoy:</p>
-                <audio controls src="${audiosPorCarta[diaNum]}" class="reproductor-carta"></audio>
-            `;
-            texto.appendChild(contenedorAudio);
-        }
-
         // 4. LETRA Y TRADUCCIÓN A DOS COLUMNAS + OPINIÓN PERSONAL
         const partes = contenido.split('---');
 
