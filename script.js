@@ -152,6 +152,12 @@ async function mostrarCarta(id) {
                 titulo: "Il fillo Rosso",
                 artista: "Alfa",
                 archivoAudio: "audios/il fillo rosso- Alfa.mp3" // Archivo del audio
+            },
+
+            8: {
+                titulo: "Et Prometo",
+                artista: "AlIvan Herzogfa",
+                archivoAudio: "audios\Ivan Herzog- Et prometo.mp3" // Archivo del audio
             }
         };
 
