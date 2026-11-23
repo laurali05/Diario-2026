@@ -1,11 +1,78 @@
-// 1. INICIALIZAR SUPABASE (Pon tus datos del Paso 1)
+// ==========================================
+// 0. CONFIGURA AQUÍ TUS CARTAS PUBLICADAS
+// ==========================================
+// Añade aquí cada carta que tengas subida en la carpeta /cartas/
+// El índice las mostrará automáticamente de la más nueva a la más antigua.
+const CARTAS_PUBLICADAS = [
+    {
+        id: 1,
+        titulo: "Feliz 4º aniversario", // <-- Cambia este título
+        foto: "imagenes/nosotros.jpeg"
+    },
+    {
+        id: 2,
+        titulo: "Tu sonrisa" // <-- Cambia este título
+    },
+    {
+        id: 3,
+        titulo: "La graduación de 2º de bach", // <-- Cambia este título
+        foto: "imagenes/graduacion.jpg"
+    },
+    {
+        id: 4,
+        titulo: "Sudoku", // <-- Cambia este título
+        foto: "imagenes/Sudoku 1.jpg"
+    },
+    {
+        id: 5,
+        titulo: "Il fillo Rosso", // <-- Cambia este título
+        cancion: {
+            titulo: "Il fillo Rosso",
+            artista: "Alfa",
+            archivoAudio: "audios/il fillo rosso- Alfa.mp3"
+        }
+    },
+    {
+        id: 6,
+        titulo: "Preguntas 1"
+    },
+    {
+        id: 7,
+        titulo: "Mis sentimientos sobre lo de Adriana"
+    },
+    {
+        id: 8,
+        titulo: "Et Prometo", // <-- Cambia este título
+        cancion: {
+            titulo: "Et Prometo",
+            artista: "Ivan Herzog",
+            archivoAudio: "audios/Ivan Herzog- Et prometo.mp3"
+        }
+    },
+    {
+        id: 9,
+        titulo: "Preguntas 2", // <-- Cambia este título
+    },
+    {
+        id: 10,
+        titulo: "Lo que siento cuando me llamas Bruja", // <-- Cambia este título
+    }
+    // Cuando subas la carta 9, añade aquí:
+    // { id: 9, titulo: "Título de la nueva carta" }
+];
+
+// ==========================================
+// 1. INICIALIZAR SUPABASE
+// ==========================================
 const SUPABASE_URL = 'https://wkcmqfkmvzlzkwqxrzzy.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndrY21xZmttdnpsemt3cXhyenp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4Mzc0MTUsImV4cCI6MjEwMTQxMzQxNX0.GAhAUJqOhRvt-bXk43weGi1yA8ZP2kLy7VY00Uw9miI';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let cartaActualId = null;
 
+// ==========================================
 // 2. VALIDAR ACCESO
+// ==========================================
 function validarAcceso() {
     const claveCorrecta = "030822";
     const claveIntroducida = document.getElementById("password").value;
@@ -18,13 +85,13 @@ function validarAcceso() {
     }
 }
 
+// ==========================================
 // 3. NAVEGACIÓN ENTRE SECCIONES
+// ==========================================
 function verSeccion(id) {
-    // Ocultamos todas las secciones primero
     const secciones = document.querySelectorAll('.pantalla');
     secciones.forEach(s => s.style.display = 'none');
 
-    // Mostramos la que queremos
     const seccion = document.getElementById(id);
     if (seccion) {
         seccion.style.display = 'block';
@@ -33,95 +100,91 @@ function verSeccion(id) {
             cargarPlanes();
         }
 
-        // Actualizar URL para secciones (opcional)
         const url = new URL(window.location.href);
+        url.searchParams.delete('dia');
         url.searchParams.set('seccion', id);
         window.history.pushState({ seccion: id }, '', url.href);
     }
 }
 
-// 4. CARGA PRINCIPAL (UNIFICADA)
+// ==========================================
+// 4. CARGA PRINCIPAL
+// ==========================================
 window.addEventListener('DOMContentLoaded', () => {
-    // Comprobar acceso
     if (sessionStorage.getItem("acceso") === "concedido") {
         const login = document.getElementById("pantalla-login");
         if (login) login.style.display = "none";
     }
 
-    // Generar sobres
     generarIndice();
 
-    // Comprobar si venimos de un link de correo (?dia=X)
     const urlParams = new URLSearchParams(window.location.search);
     const diaEnUrl = urlParams.get('dia');
     if (diaEnUrl) {
+        document.getElementById('inicio').style.display = 'none';
         mostrarCarta(diaEnUrl);
+    }
+
+    const inputBusqueda = document.getElementById('input-busqueda');
+    if (inputBusqueda) {
+        inputBusqueda.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') buscarCarta();
+        });
     }
 });
 
-// 5. GENERAR ÍNDICE DE CARTAS
+// ==========================================
+// 5. GENERAR ÍNDICE DE CARTAS (DE LA 1 EN ADELANTE)
+// ==========================================
 function generarIndice() {
     const contenedor = document.getElementById('contenedor-lineas');
     if (!contenedor) return;
     contenedor.innerHTML = "";
 
-    const hoy = calcularDiaActual();
-    const totalDeCartas = 365;
+    // Ordenamos de más antigua (1 arriba del todo) a más reciente (abajo)
+    const cartasOrdenadas = [...CARTAS_PUBLICADAS].sort((a, b) => a.id - b.id);
 
-    // Detectar si estás trabajando en local (Live Server)
-    const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-
-    for (let i = 1; i <= totalDeCartas; i++) {
+    cartasOrdenadas.forEach((carta, index) => {
         const linea = document.createElement('div');
-
-        // Si estás en local O si el día ya ha llegado, se desbloquea
-        if (esLocal || i <= hoy) {
-            linea.className = 'linea-carta desbloqueada';
-            linea.innerHTML = `<span>💌 Carta ${i} ${i === hoy ? '✨ (Hoy)' : ''}</span>`;
-            linea.onclick = () => mostrarCarta(i);
-        } else {
-            linea.className = 'linea-carta bloqueada';
-            linea.innerHTML = `<span>🔒 Carta ${i}</span>`;
-        }
+        linea.className = 'linea-carta desbloqueada';
+        // El destello ✨ aparece en la última carta subida
+        const etiquetaNueva = index === cartasOrdenadas.length - 1 ? ' ✨' : '';
+        linea.innerHTML = `<span>💌 ${escapeHTML(carta.titulo)}${etiquetaNueva}</span>`;
+        linea.onclick = () => mostrarCarta(carta.id);
         contenedor.appendChild(linea);
-    }
+    });
 }
 
-// 6. MOSTRAR CARTA (CON CANCIÓN ESCUCHABLE Y DOS COLUMNAS)
+// ==========================================
+// 6. MOSTRAR CARTA
+// ==========================================
 async function mostrarCarta(id) {
     const diaNum = parseInt(id, 10);
-    cartaActualId = diaNum;
+    const cartaInfo = CARTAS_PUBLICADAS.find(c => c.id === diaNum);
 
-    const hoy = calcularDiaActual();
-    const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-
-    if (!esLocal && diaNum > hoy) {
-        alert(`🔒 La carta del día ${diaNum} aún no está disponible.`);
+    if (!cartaInfo) {
+        alert("Esta carta no existe todavía.");
         verSeccion('cartas');
         return;
     }
 
-    const seccionCartas = document.getElementById('cartas');
-    const seccionLectura = document.getElementById('lectura');
-    const seccionImagenes = document.getElementById('imagenes');
-    const seccionMusica = document.getElementById('musica');
+    cartaActualId = diaNum;
 
-    if (seccionCartas) seccionCartas.style.display = 'none';
-    if (seccionImagenes) seccionImagenes.style.display = 'none';
-    if (seccionMusica) seccionMusica.style.display = 'none';
+    document.querySelectorAll('.pantalla').forEach(s => s.style.display = 'none');
+    const seccionLectura = document.getElementById('lectura');
     if (seccionLectura) seccionLectura.style.display = 'block';
 
     const url = new URL(window.location.href);
+    url.searchParams.delete('seccion');
     url.searchParams.set('dia', diaNum);
     window.history.pushState({ id: diaNum }, '', url.href);
 
-    document.getElementById('titulo-carta').innerText = "Carta " + diaNum;
+    // Mostramos el título personalizado en lugar de "Carta X"
+    document.getElementById('titulo-carta').innerText = cartaInfo.titulo;
     const texto = document.getElementById('texto-carta');
     texto.innerText = "Abriendo el sobre... 💌";
 
-    if (typeof cargarComentarios === 'function') {
-        cargarComentarios(diaNum);
-    }
+    cargarComentarios(diaNum);
 
     try {
         const respuesta = await fetch(`cartas/${diaNum}.txt`);
@@ -130,55 +193,35 @@ async function mostrarCarta(id) {
 
         texto.innerHTML = "";
 
-        // 1. ASOCIACIÓN DE FOTOS (Al principio de la carta)
-        const fotosPorCarta = {
-            1: "imagenes/nosotros.jpeg",
-            3: "imagenes/graduacion.jpg",
-            4: "imagenes/Sudoku 1.jpg",
-        };
-
-        if (fotosPorCarta[diaNum]) {
+        // 1. FOTO ASOCIADA
+        if (cartaInfo.foto) {
             const contenedorFoto = document.createElement('div');
             contenedorFoto.className = 'bloque-foto-carta';
             contenedorFoto.innerHTML = `
-                <img src="${fotosPorCarta[diaNum]}" alt="Foto Carta ${diaNum}" class="foto-carta-clickable" onclick="verSeccion('imagenes')">
-                `;
+                <img src="${cartaInfo.foto}" alt="${escapeHTML(cartaInfo.titulo)}" class="foto-carta-clickable" onclick="verSeccion('imagenes')">
+            `;
             texto.appendChild(contenedorFoto);
         }
 
-        // 2. CANCIÓN DEDICADA CON REPRODUCTOR DE AUDIO
-        const cancionesPorCarta = {
-            5: {
-                titulo: "Il fillo Rosso",
-                artista: "Alfa",
-                archivoAudio: "audios/il fillo rosso- Alfa.mp3" // Archivo del audio
-            },
-
-            8: {
-                titulo: "Et Prometo",
-                artista: "Ivan Herzog",
-                archivoAudio: "audios/Ivan Herzog- Et prometo.mp3" // Archivo del audio
-            },
-        };
-
-        if (cancionesPorCarta[diaNum]) {
-            const info = cancionesPorCarta[diaNum];
+        // 2. CANCIÓN DEDICADA
+        if (cartaInfo.cancion) {
+            const info = cartaInfo.cancion;
             const tarjetaCancion = document.createElement('div');
             tarjetaCancion.className = 'tarjeta-cancion-reproductor';
             tarjetaCancion.innerHTML = `
                 <div class="cabecera-cancion-linea">
                     <div class="info-cancion-top">
-                        <strong>${info.titulo}</strong>
-                        <p>${info.artista}</p>
+                        <strong>${escapeHTML(info.titulo)}</strong>
+                        <p>${escapeHTML(info.artista)}</p>
                     </div>
-                    <button onclick="verSeccion('musica')" class="btn-ir-seccion">🎶 </button>
+                    <button onclick="verSeccion('musica')" class="btn-ir-seccion">🎶</button>
                 </div>
                 <audio controls src="${info.archivoAudio}" class="reproductor-cancion-carta"></audio>
             `;
             texto.appendChild(tarjetaCancion);
         }
 
-        // 4. LETRA Y TRADUCCIÓN A DOS COLUMNAS + OPINIÓN PERSONAL
+        // 3. TEXTO DE LA CARTA (2 COLUMNAS + OPINIÓN)
         const partes = contenido.split('---');
 
         if (partes.length >= 2) {
@@ -204,12 +247,43 @@ async function mostrarCarta(id) {
         }
 
     } catch (error) {
-        texto.innerText = `Todavía no hay carta creada para este día (${diaNum}.txt). ❤️`;
+        texto.innerText = `No se ha podido cargar el contenido de esta carta (${diaNum}.txt). ❤️`;
     }
 }
 
+// ==========================================
+// 7. NOTIFICAR POR CORREO AL SUBIR NUEVA CARTA (EmailJS)
+// ==========================================
+function notificarNuevaCarta() {
+    if (!cartaActualId) return;
+    const cartaInfo = CARTAS_PUBLICADAS.find(c => c.id === cartaActualId);
+    if (!cartaInfo) return;
 
-// 7. ENVÍO DE COMENTARIOS VÍA AJAX (Sin recargar la página)
+    if (!confirm(`¿Enviar correo avisando de la carta "${cartaInfo.titulo}"?`)) return;
+
+    const enlaceCarta = `${window.location.origin}${window.location.pathname}?dia=${cartaInfo.id}`;
+
+    // Rellena estos 3 datos desde tu cuenta gratuita de emailjs.com:
+    const SERVICE_ID = 'TU_SERVICE_ID';
+    const TEMPLATE_ID = 'TU_TEMPLATE_ID';
+    const PUBLIC_KEY = 'TU_PUBLIC_KEY';
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+        titulo_carta: cartaInfo.titulo,
+        enlace_carta: enlaceCarta
+    }, PUBLIC_KEY)
+    .then(() => {
+        alert("💌 ¡Aviso enviado por correo!");
+    })
+    .catch((err) => {
+        console.error(err);
+        alert("Error al enviar el correo. Revisa la configuración de EmailJS.");
+    });
+}
+
+// ==========================================
+// 8. COMENTARIOS (SUPABASE)
+// ==========================================
 async function cargarComentarios(diaId) {
     const contenedor = document.getElementById('lista-comentarios');
     if (!contenedor) return;
@@ -244,7 +318,6 @@ async function cargarComentarios(diaId) {
     }).join('');
 }
 
-// 8. ENVIAR UN NUEVO COMENTARIO
 async function enviarComentario() {
     const textarea = document.getElementById('texto-comentario');
     const estado = document.getElementById('estado-envio');
@@ -265,8 +338,6 @@ async function enviarComentario() {
         estado.style.display = 'block';
         estado.innerText = '¡Comentario guardado! ❤️';
         setTimeout(() => { estado.style.display = 'none'; }, 3000);
-
-        // Volvemos a cargar la lista para que aparezca al instante
         cargarComentarios(cartaActualId);
     } else {
         alert('Ocurrió un problema al guardar el comentario.');
@@ -276,44 +347,15 @@ async function enviarComentario() {
     btn.innerText = "Publicar comentario ❤️";
 }
 
-// Función auxiliar de seguridad para evitar inyección de código
 function escapeHTML(str) {
     return str.replace(/[&<>'"]/g,
         tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
     );
 }
 
-// 9. CALCULAR DÍA ACTUAL (Sincronizado con el servidor de Java)
-function calcularDiaActual() {
-    // Mes 7 es Agosto en JavaScript (Enero=0, Febrero=1... Agosto=7)
-    const fechaInicio = new Date(2026, 7, 3); 
-    const hoy = new Date();
-    // Normalizamos ambas fechas a las 00:00:00 locales para contar solo días naturales
-    fechaInicio.setHours(0, 0, 0, 0);
-    hoy.setHours(0, 0, 0, 0);
-
-    // Diferencia en días de calendario
-    const diferenciaMs = hoy.getTime() - fechaInicio.getTime();
-    const diasTranscurridos = Math.round(diferenciaMs / (1000 * 60 * 60 * 24));
-
-    // El primer día (03/08/2026) es el Día 1
-    const diaActual = diasTranscurridos + 1;
-
-    return diaActual > 0 ? diaActual : 0;
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const diaEnUrl = urlParams.get('dia');
-
-    if (diaEnUrl) {
-        // Si hay un día en la URL, ocultamos el inicio y mostramos la carta
-        document.getElementById('inicio').style.display = 'none';
-        mostrarCarta(diaEnUrl);
-    }
-});
-
-// 10. CARGAR PLANES DESDE SUPABASE
+// ==========================================
+// 9. PLANES JUNTOS (SUPABASE)
+// ==========================================
 async function cargarPlanes() {
     const contenedor = document.getElementById('contenedor-planes');
     if (!contenedor) return;
@@ -344,11 +386,9 @@ async function cargarPlanes() {
     `).join('');
 }
 
-// 11. AÑADIR UN NUEVO PLAN
 async function agregarPlan() {
     const input = document.getElementById('input-nuevo-plan');
     const titulo = input.value.trim();
-
     if (!titulo) return;
 
     const { error } = await supabaseClient
@@ -363,19 +403,15 @@ async function agregarPlan() {
     }
 }
 
-// 12. MARCAR PLAN COMO CUMPLIDO / PENDIENTE
 async function comprobarPlan(id, estadoActual) {
     const { error } = await supabaseClient
         .from('planes')
         .update({ realizado: estadoActual })
         .eq('id', id);
 
-    if (!error) {
-        cargarPlanes();
-    }
+    if (!error) cargarPlanes();
 }
 
-// 13. ELIMINAR UN PLAN
 async function eliminarPlan(id) {
     if (!confirm("¿Seguro que quieres borrar este plan?")) return;
 
@@ -384,90 +420,36 @@ async function eliminarPlan(id) {
         .delete()
         .eq('id', id);
 
-    if (!error) {
-        cargarPlanes();
-    }
+    if (!error) cargarPlanes();
 }
 
-// 14. BUSCADOR PARA IR A UN DÍA CONCRETO
+// ==========================================
+// 10. BUSCADOR POR TÍTULO O NÚMERO DE CARTA
+// ==========================================
 function buscarCarta() {
     const input = document.getElementById('input-busqueda');
     if (!input) return;
 
-    const numDia = parseInt(input.value, 10);
-    const hoy = calcularDiaActual();
+    const consulta = input.value.trim().toLowerCase();
+    if (!consulta) return;
 
-    // 1. Validar que se haya introducido un número correcto
-    if (isNaN(numDia) || numDia < 1 || numDia > 365) {
-        alert("Por favor, introduce un número de día válido (entre 1 y 365).");
+    const encontrada = CARTAS_PUBLICADAS.find(c =>
+        c.id.toString() === consulta || c.titulo.toLowerCase().includes(consulta)
+    );
+
+    if (!encontrada) {
+        alert("No se ha encontrado ninguna carta con ese nombre o número.");
         return;
     }
 
-    // 2. Comprobar si la carta está bloqueada (si es un día futuro)
-    if (numDia > hoy) {
-        alert(`🔒 La carta del día ${numDia} aún no está disponible.`);
-        return;
-    }
-
-    // 3. Si el día ya ha llegado, ocultamos el inicio y mostramos la carta
     document.getElementById('inicio').style.display = 'none';
-    mostrarCarta(numDia);
-
-    // Opcional: limpiar el input del buscador
+    mostrarCarta(encontrada.id);
     input.value = '';
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    // Escuchar la tecla Enter en el buscador
-    const inputBusqueda = document.getElementById('input-busqueda');
-    if (inputBusqueda) {
-        inputBusqueda.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                buscarCarta();
-            }
-        });
-    }
-});
-
-// 15. ABRIR CARTA DESDE LA GALERÍA DE IMÁGENES
+// ==========================================
+// 11. ABRIR CARTA DESDE GALERÍA
+// ==========================================
 function abrirCartaDesdeImagen(diaNum) {
-    const hoy = calcularDiaActual();
-    const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-
-    // Si NO estás en local y la carta es de un día futuro, bloqueamos el clic
-    if (!esLocal && diaNum > hoy) {
-        alert(`🔒 La foto y la carta del día ${diaNum} aún no están disponibles.`);
-        return;
-    }
-
-    // Ocultar la galería de imágenes y abrir la carta
-    const seccionImagenes = document.getElementById('imagenes');
-    if (seccionImagenes) {
-        seccionImagenes.style.display = 'none';
-    }
-
     mostrarCarta(diaNum);
 }
-
-// 16. BLOQUEAR FOTOS FUTURAS VISUALMENTE
-function actualizarGaleriaFotos() {
-    const hoy = calcularDiaActual();
-    const esLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-
-    // Seleccionamos todos los bloques de fotos que tengan un número de día
-    const fotos = document.querySelectorAll('.foto-interactiva');
-
-    fotos.forEach(bloque => {
-        const diaNum = parseInt(bloque.getAttribute('data-dia'), 10);
-
-        // Si NO estamos en local y el día aún no ha llegado
-        if (!esLocal && diaNum > hoy) {
-            bloque.classList.add('foto-bloqueada');
-        } else {
-            bloque.classList.remove('foto-bloqueada');
-        }
-    });
-}
-
-// Ejecutar al cargar la página y al cambiar de sección
-window.addEventListener('DOMContentLoaded', actualizarGaleriaFotos);
