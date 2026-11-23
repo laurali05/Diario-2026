@@ -46,11 +46,14 @@
                     <p class="pie-foto">Los días más especiales del año para ti</p>
                 </div>
 
-                <div class="bloque-info">
-                    <div class="caja-buscador">
-                        <span>🔍</span>
-                        <input type="text" id="input-busqueda" placeholder="Buscar carta...">
-                        <button onclick="buscarCarta()">Ir</button>
+               <div class="bloque-info">
+                    <div class="contenedor-buscador">
+                        <div class="caja-buscador">
+                            <span>🔍</span>
+                            <input type="text" id="input-busqueda" placeholder="Buscar carta por título..." autocomplete="off">
+                            <button type="button" onclick="buscarCarta()">Ir</button>
+                        </div>
+                        <div id="sugerencias-buscador" class="lista-sugerencias" style="display: none;"></div>
                     </div>
 
                     <div class="mensaje-decorativo">
@@ -58,7 +61,6 @@
                         <p>Para poder seguir dibujando constelaciones por siempre.</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -154,18 +156,6 @@
                 </div>
                 <audio controls src="audios/Ivan Herzog- Et prometo.mp3" class="reproductor-cancion-carta"></audio>
             </div>
-
-        <!-- Audio 2
-            <div class="caja-audio" data-dia="5">
-                <div class="cabecera-cancion-linea">
-                    <div class="info-cancion-top">
-                        <h4>Il fillo rosso</h4>
-                        <p>Alfa</p>
-                    </div>
-                    <button onclick="mostrarCarta(5)" class="btn-ir-carta">✉️ </button>
-                </div>
-                <audio controls src="audios/il fillo rosso- Alfa.mp3" class="reproductor-cancion-carta"></audio>
-            </div> -->
         </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>

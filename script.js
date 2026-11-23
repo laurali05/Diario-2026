@@ -117,19 +117,13 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     generarIndice();
+    inicializarBuscador();
 
     const urlParams = new URLSearchParams(window.location.search);
     const diaEnUrl = urlParams.get('dia');
     if (diaEnUrl) {
         document.getElementById('inicio').style.display = 'none';
         mostrarCarta(diaEnUrl);
-    }
-
-    const inputBusqueda = document.getElementById('input-busqueda');
-    if (inputBusqueda) {
-        inputBusqueda.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') buscarCarta();
-        });
     }
 });
 
@@ -424,27 +418,141 @@ async function eliminarPlan(id) {
 }
 
 // ==========================================
-// 10. BUSCADOR POR TÍTULO O NÚMERO DE CARTA
+// 10. BUSCADOR CON AUTOCOMPLETADO TIPO GOOGLE
 // ==========================================
+let indiceSugerenciaActiva = -1;
+let sugerenciasActuales = [];
+
+function normalizarTexto(texto) {
+    return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+}
+
+function inicializarBuscador() {
+    const input = document.getElementById('input-busqueda');
+    const lista = document.getElementById('sugerencias-buscador');
+    if (!input || !lista) return;
+
+    // Al escribir en el input
+    input.addEventListener('input', () => {
+        const consulta = normalizarTexto(input.value.trim());
+        indiceSugerenciaActiva = -1;
+
+        if (!consulta) {
+            lista.style.display = 'none';
+            sugerenciasActuales = [];
+            return;
+        }
+
+        sugerenciasActuales = CARTAS_PUBLICADAS.filter(c =>
+            normalizarTexto(c.titulo).includes(consulta) ||
+            c.id.toString() === consulta
+        );
+
+        renderizarSugerencias();
+    });
+
+    // Teclado: flechas para bajar/subir y Enter para abrir
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') {
+            if (sugerenciasActuales.length === 0) return;
+            e.preventDefault();
+            indiceSugerenciaActiva = (indiceSugerenciaActiva + 1) % sugerenciasActuales.length;
+            actualizarSeleccionVisual();
+        } else if (e.key === 'ArrowUp') {
+            if (sugerenciasActuales.length === 0) return;
+            e.preventDefault();
+            indiceSugerenciaActiva = (indiceSugerenciaActiva - 1 + sugerenciasActuales.length) % sugerenciasActuales.length;
+            actualizarSeleccionVisual();
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            // 1. Si has seleccionado una con las flechas, abre esa
+            if (indiceSugerenciaActiva >= 0 && sugerenciasActuales[indiceSugerenciaActiva]) {
+                seleccionarCartaBuscador(sugerenciasActuales[indiceSugerenciaActiva].id);
+            } 
+            // 2. Si solo hay 1 coincidencia exacta, ábrela
+            else if (sugerenciasActuales.length === 1) {
+                seleccionarCartaBuscador(sugerenciasActuales[0].id);
+            } 
+            // 3. Si hay varias (ej. "Preguntas 1", "Preguntas 2"), resalta la primera para que elijas
+            else if (sugerenciasActuales.length > 1) {
+                indiceSugerenciaActiva = 0;
+                actualizarSeleccionVisual();
+            }
+        } else if (e.key === 'Escape') {
+            lista.style.display = 'none';
+        }
+    });
+
+    // Cerrar si haces clic fuera
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.contenedor-buscador')) {
+            lista.style.display = 'none';
+        }
+    });
+}
+
+function renderizarSugerencias() {
+    const lista = document.getElementById('sugerencias-buscador');
+    if (!lista) return;
+
+    if (sugerenciasActuales.length === 0) {
+        lista.innerHTML = `<div class="item-sugerencia sin-resultados">No hay cartas que coincidan...</div>`;
+        lista.style.display = 'block';
+        return;
+    }
+
+    lista.innerHTML = sugerenciasActuales.map((carta, index) => `
+        <div class="item-sugerencia" data-index="${index}" onclick="seleccionarCartaBuscador(${carta.id})">
+            <span>💌</span>
+            <span>${escapeHTML(carta.titulo)}</span>
+        </div>
+    `).join('');
+
+    lista.style.display = 'block';
+}
+
+function actualizarSeleccionVisual() {
+    const items = document.querySelectorAll('#sugerencias-buscador .item-sugerencia');
+    items.forEach((item, idx) => {
+        item.classList.toggle('activa', idx === indiceSugerenciaActiva);
+    });
+}
+
+function seleccionarCartaBuscador(id) {
+    const input = document.getElementById('input-busqueda');
+    const lista = document.getElementById('sugerencias-buscador');
+    if (input) input.value = '';
+    if (lista) lista.style.display = 'none';
+
+    document.getElementById('inicio').style.display = 'none';
+    mostrarCarta(id);
+}
+
 function buscarCarta() {
     const input = document.getElementById('input-busqueda');
     if (!input) return;
 
-    const consulta = input.value.trim().toLowerCase();
+    const consulta = normalizarTexto(input.value.trim());
     if (!consulta) return;
 
-    const encontrada = CARTAS_PUBLICADAS.find(c =>
-        c.id.toString() === consulta || c.titulo.toLowerCase().includes(consulta)
+    const coincidencias = CARTAS_PUBLICADAS.filter(c =>
+        normalizarTexto(c.titulo).includes(consulta) || c.id.toString() === consulta
     );
 
-    if (!encontrada) {
-        alert("No se ha encontrado ninguna carta con ese nombre o número.");
-        return;
+    if (coincidencias.length === 0) {
+        alert("No se ha encontrado ninguna carta con ese título.");
+    } else if (coincidencias.length === 1) {
+        seleccionarCartaBuscador(coincidencias[0].id);
+    } else {
+        // Si hay varias opciones al pulsar "Ir", desplegamos la lista para elegir
+        sugerenciasActuales = coincidencias;
+        indiceSugerenciaActiva = 0;
+        renderizarSugerencias();
+        actualizarSeleccionVisual();
     }
-
-    document.getElementById('inicio').style.display = 'none';
-    mostrarCarta(encontrada.id);
-    input.value = '';
 }
 
 // ==========================================
