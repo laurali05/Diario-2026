@@ -258,9 +258,9 @@ function notificarNuevaCarta() {
     const enlaceCarta = `${window.location.origin}${window.location.pathname}?dia=${cartaInfo.id}`;
 
     // Rellena estos 3 datos desde tu cuenta gratuita de emailjs.com:
-    const SERVICE_ID = 'TU_SERVICE_ID';
-    const TEMPLATE_ID = 'TU_TEMPLATE_ID';
-    const PUBLIC_KEY = 'TU_PUBLIC_KEY';
+    const SERVICE_ID = 'service_88wqugl';
+    const TEMPLATE_ID = 'template_3xv990b';
+    const PUBLIC_KEY = '1u8QfnReC5raJEPx_';
 
     emailjs.send(SERVICE_ID, TEMPLATE_ID, {
         titulo_carta: cartaInfo.titulo,
