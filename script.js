@@ -126,6 +126,15 @@ window.addEventListener('DOMContentLoaded', () => {
         mostrarCarta(diaEnUrl);
     }
 
+    const inputPassword = document.getElementById("password");
+    if (inputPassword) {
+        inputPassword.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                validarAcceso();
+            }
+        });
+    }
+
     document.getElementById('input-nuevo-libro')?.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') agregarRecomendacion('libro');
     });

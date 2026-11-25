@@ -35,30 +35,84 @@ html {
 }
 
 /* ESTILO DEL MENÚ  */
+/* ESTILO DEL MENÚ (Ordenador y base) */
 .navbar {
     background-color: #eee8d5;
-    /* Un tono un poco más oscuro que el crema */
-    padding: 15px;
+    padding: 12px 15px;
     display: flex;
     justify-content: center;
-    gap: 20px;
+    align-items: center;
+    gap: 15px;
     border-bottom: 1px solid #d4a373;
+    overflow-x: auto; /* Permite deslizar horizontalmente */
+    -webkit-overflow-scrolling: touch; /* Deslizamiento suave en iPhone */
+    scrollbar-width: none; /* Oculta la barra gris en Firefox */
+}
+
+/* Oculta la barra de scroll fea en Chrome y Safari */
+.navbar::-webkit-scrollbar {
+    display: none;
 }
 
 .navbar button {
     background: none;
     border: none;
     font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: #5b3e2b;
     cursor: pointer;
-    padding: 5px 15px;
+    padding: 6px 14px;
     transition: 0.3s;
+    white-space: nowrap; /* Evita que el texto de un botón se parta en dos líneas */
+    flex-shrink: 0; /* Impide que los botones se aplasten */
 }
 
 .navbar button:hover {
     color: #ff85a2;
-    /* Cambia a rosa al pasar el ratón */
+}
+
+/* AJUSTES PARA MÓVIL */
+@media (max-width: 768px) {
+    .navbar {
+        justify-content: flex-start; /* Empieza por la izquierda para que se vean las primeras pestañas completas */
+        padding: 10px 12px;
+        gap: 8px;
+    }
+
+    .navbar button {
+        font-size: 0.95rem;
+        padding: 8px 12px;
+        background-color: rgba(255, 255, 255, 0.45); /* Pequeño efecto píldora para que se note que es deslizable */
+        border-radius: 20px;
+    }
+
+    .titulo-romantico {
+        font-size: 2.6rem; /* Título principal un poco más recogido en móvil */
+    }
+
+    .banner-rosa {
+        height: 95px;
+    }
+
+    /* En la pantalla de Inicio, ponemos la foto arriba y el buscador abajo en 1 columna */
+    .grid-inicio {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .pantalla {
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    .pergamino {
+        padding: 25px 18px;
+    }
+
+    .caja-login {
+        width: 85%;
+        padding: 30px 20px;
+    }
 }
 
 /* CUERPO DE LA PÁGINA */
