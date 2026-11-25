@@ -770,3 +770,111 @@ html {
     border-color: #ff85a2;
     transform: translateX(-4px);
 }
+
+/* ==========================================
+   FORMULARIO Y TABLA DE LIBROS / PELÍCULAS
+   ========================================== */
+#libros, #peliculas {
+    max-width: 780px; /* Un poco más ancho para que quepan bien las columnas */
+}
+
+.form-tabla-recomendaciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 25px 0;
+}
+
+.form-tabla-recomendaciones input {
+    flex: 1;
+    min-width: 150px;
+    padding: 11px 16px;
+    border: 1px solid #d4a373;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    outline: none;
+    background-color: #ffffff;
+    color: #5b3e2b;
+}
+
+.form-tabla-recomendaciones input:focus {
+    border-color: #ff85a2;
+}
+
+.form-tabla-recomendaciones button {
+    background-color: #ffc1d1;
+    color: #5b3e2b;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.form-tabla-recomendaciones button:hover {
+    background-color: #ff85a2;
+}
+
+.contenedor-tabla-scroll {
+    width: 100%;
+    overflow-x: auto;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(91, 62, 43, 0.06);
+    border: 1px solid #e6d5c1;
+}
+
+.tabla-recomendaciones {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    color: #5b3e2b;
+    font-size: 0.95rem;
+}
+
+.tabla-recomendaciones thead {
+    background-color: #eee8d5;
+    border-bottom: 2px solid #d4a373;
+}
+
+.tabla-recomendaciones th {
+    padding: 14px 16px;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    color: #5b3e2b;
+}
+
+.tabla-recomendaciones td {
+    padding: 13px 16px;
+    border-bottom: 1px solid #f0e6d6;
+    vertical-align: middle;
+}
+
+.tabla-recomendaciones tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla-recomendaciones tbody tr:hover {
+    background-color: #fdf6e3;
+}
+
+.tabla-recomendaciones tr.completado td.celda-texto {
+    text-decoration: line-through;
+    color: #9e8a7c;
+    opacity: 0.7;
+}
+
+.celda-check {
+    width: 45px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.celda-borrar {
+    width: 45px;
+    text-align: center;
+}

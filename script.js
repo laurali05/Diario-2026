@@ -96,9 +96,9 @@ function verSeccion(id) {
     if (seccion) {
         seccion.style.display = 'block';
 
-        if (id === 'planes') {
-            cargarPlanes();
-        }
+        if (id === 'planes') cargarPlanes();
+        if (id === 'libros') cargarRecomendaciones('libro');
+        if (id === 'peliculas') cargarRecomendaciones('pelicula');
 
         const url = new URL(window.location.href);
         url.searchParams.delete('dia');
@@ -125,6 +125,13 @@ window.addEventListener('DOMContentLoaded', () => {
         document.getElementById('inicio').style.display = 'none';
         mostrarCarta(diaEnUrl);
     }
+
+    document.getElementById('input-nuevo-libro')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') agregarRecomendacion('libro');
+    });
+    document.getElementById('input-nueva-pelicula')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') agregarRecomendacion('pelicula');
+    });
 });
 
 // ==========================================
@@ -560,4 +567,176 @@ function buscarCarta() {
 // ==========================================
 function abrirCartaDesdeImagen(diaNum) {
     mostrarCarta(diaNum);
+}
+
+// ==========================================
+// 12. TABLA DE LIBROS Y PELÍCULAS (SUPABASE)
+// ==========================================
+async function cargarRecomendaciones(categoria) {
+    const contenedorId = categoria === 'libro' ? 'contenedor-libros' : 'contenedor-peliculas';
+    const contenedor = document.getElementById(contenedorId);
+    if (!contenedor) return;
+
+    const { data: items, error } = await supabaseClient
+        .from('recomendaciones')
+        .select('*')
+        .eq('categoria', categoria)
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        contenedor.innerHTML = `<p style='color: #888;'>Error al cargar: ${error.message}</p>`;
+        return;
+    }
+
+    if (!items || items.length === 0) {
+        const textoVacio = categoria === 'libro'
+            ? "Aún no habéis añadido ningún libro. ¡Añadid el primero arriba!"
+            : "Aún no habéis añadido ninguna película. ¡Añadid la primera arriba!";
+        contenedor.innerHTML = `<p style='color: #888; text-align: center; font-style: italic;'>${textoVacio}</p>`;
+        return;
+    }
+
+    if (categoria === 'libro') {
+        contenedor.innerHTML = `
+            <div class="contenedor-tabla-scroll">
+                <table class="tabla-recomendaciones">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center;">Leído</th>
+                            <th>Título</th>
+                            <th>Autor</th>
+                            <th>Saga</th>
+                            <th style="text-align:center;">Borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${items.map(item => `
+                            <tr class="${item.completado ? 'completado' : ''}">
+                                <td class="celda-check" onclick="alternarRecomendacion(${item.id}, ${!item.completado}, 'libro')">
+                                    ${item.completado ? '✅' : '⚪'}
+                                </td>
+                                <td class="celda-texto"><strong>${escapeHTML(item.titulo)}</strong></td>
+                                <td class="celda-texto">${item.autor ? escapeHTML(item.autor) : '<span style="color:#bba898;">—</span>'}</td>
+                                <td class="celda-texto">${item.saga ? escapeHTML(item.saga) : '<span style="color:#bba898;">—</span>'}</td>
+                                <td class="celda-borrar">
+                                    <button class="btn-eliminar-plan" onclick="eliminarRecomendacion(${item.id}, 'libro')" title="Eliminar">🗑️</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        `;
+    } else {
+        contenedor.innerHTML = `
+            <div class="contenedor-tabla-scroll">
+                <table class="tabla-recomendaciones">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center;">Vista</th>
+                            <th>Título</th>
+                            <th>Saga / Plataforma</th>
+                            <th style="text-align:center;">Borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${items.map(item => `
+                            <tr class="${item.completado ? 'completado' : ''}">
+                                <td class="celda-check" onclick="alternarRecomendacion(${item.id}, ${!item.completado}, 'pelicula')">
+                                    ${item.completado ? '✅' : '⚪'}
+                                </td>
+                                <td class="celda-texto"><strong>${escapeHTML(item.titulo)}</strong></td>
+                                <td class="celda-texto">${item.saga ? escapeHTML(item.saga) : '<span style="color:#bba898;">—</span>'}</td>
+                                <td class="celda-borrar">
+                                    <button class="btn-eliminar-plan" onclick="eliminarRecomendacion(${item.id}, 'pelicula')" title="Eliminar">🗑️</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
+}
+
+async function agregarLibro() {
+    const inputTitulo = document.getElementById('input-libro-titulo');
+    const inputAutor = document.getElementById('input-libro-autor');
+    const inputSaga = document.getElementById('input-libro-saga');
+
+    const titulo = inputTitulo.value.trim();
+    const autor = inputAutor.value.trim();
+    const saga = inputSaga.value.trim();
+
+    if (!titulo) {
+        alert("Escribe al menos el título del libro.");
+        return;
+    }
+
+    const { error } = await supabaseClient
+        .from('recomendaciones')
+        .insert([{
+            titulo: titulo,
+            autor: autor || null,
+            saga: saga || null,
+            categoria: 'libro'
+        }]);
+
+    if (!error) {
+        inputTitulo.value = '';
+        inputAutor.value = '';
+        inputSaga.value = '';
+        cargarRecomendaciones('libro');
+    } else {
+        alert('Error al guardar el libro: ' + error.message);
+    }
+}
+
+async function agregarPelicula() {
+    const inputTitulo = document.getElementById('input-pelicula-titulo');
+    const inputSaga = document.getElementById('input-pelicula-saga');
+
+    const titulo = inputTitulo.value.trim();
+    const saga = inputSaga.value.trim();
+
+    if (!titulo) {
+        alert("Escribe al menos el título de la película.");
+        return;
+    }
+
+    const { error } = await supabaseClient
+        .from('recomendaciones')
+        .insert([{
+            titulo: titulo,
+            saga: saga || null,
+            categoria: 'pelicula'
+        }]);
+
+    if (!error) {
+        inputTitulo.value = '';
+        inputSaga.value = '';
+        cargarRecomendaciones('pelicula');
+    } else {
+        alert('Error al guardar la película: ' + error.message);
+    }
+}
+
+async function alternarRecomendacion(id, nuevoEstado, categoria) {
+    const { error } = await supabaseClient
+        .from('recomendaciones')
+        .update({ completado: nuevoEstado })
+        .eq('id', id);
+
+    if (!error) cargarRecomendaciones(categoria);
+}
+
+async function eliminarRecomendacion(id, categoria) {
+    if (!confirm("¿Seguro que quieres borrar este elemento?")) return;
+
+    const { error } = await supabaseClient
+        .from('recomendaciones')
+        .delete()
+        .eq('id', id);
+
+    if (!error) cargarRecomendaciones(categoria);
 }

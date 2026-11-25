@@ -31,6 +31,8 @@
         <button onclick="verSeccion('cartas')">✉️ Cartas</button>
         <button onclick="verSeccion('imagenes')">🖼️ Imágenes</button>
         <button onclick="verSeccion('musica')">🎶 Música</button>
+        <button onclick="verSeccion('libros')">📖 Libros</button>
+        <button onclick="verSeccion('peliculas')">🎬 Películas/Series</button>
     </nav>
 
     <section id="inicio" class="pantalla">
@@ -157,6 +159,34 @@
                 </div>
                 <audio controls src="audios/Ivan Herzog- Et prometo.mp3" class="reproductor-cancion-carta"></audio>
             </div>
+        </div>
+    </section>
+    <section id="libros" class="pantalla" style="display:none;">
+        <p class="frase-intro">Libros que nos recomendamos para leer o comentar juntos. 📚</p>
+
+        <div class="form-tabla-recomendaciones">
+            <input type="text" id="input-libro-titulo" placeholder="Título del libro *" required>
+            <input type="text" id="input-libro-autor" placeholder="Autor/a">
+            <input type="text" id="input-libro-saga" placeholder="Saga (opcional)">
+            <button onclick="agregarLibro()">Añadir 📚</button>
+        </div>
+
+        <div id="contenedor-libros">
+            <p style="color: #888;">Cargando libros...</p>
+        </div>
+    </section>
+
+    <section id="peliculas" class="pantalla" style="display:none;">
+        <p class="frase-intro">Películas y series pendientes para ver juntos. 🎬</p>
+
+        <div class="form-tabla-recomendaciones">
+            <input type="text" id="input-pelicula-titulo" placeholder="Título de la película o serie *" required>
+            <input type="text" id="input-pelicula-saga" placeholder="Saga / Plataforma (opcional)">
+            <button onclick="agregarPelicula()">Añadir 🎬</button>
+        </div>
+
+        <div id="contenedor-peliculas">
+            <p style="color: #888;">Cargando películas...</p>
         </div>
     </section>
     <<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
