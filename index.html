@@ -64,6 +64,31 @@
                     </div>
                 </div>
             </div>
+            <!-- CUENTA ATRÁS PARA VERNOS -->
+            <div class="tarjeta-cuenta-atras">
+                <p class="titulo-cuenta-atras">✨ Tiempo que queda para volver a abrazarnos ✨</p>
+                <div class="reloj-cuenta-atras" id="contenedor-reloj">
+                    <div class="caja-tiempo">
+                        <span id="ca-dias">00</span>
+                        <small>Días</small>
+                    </div>
+                    <div class="caja-tiempo">
+                        <span id="ca-horas">00</span>
+                        <small>Horas</small>
+                    </div>
+                    <div class="caja-tiempo">
+                        <span id="ca-minutos">00</span>
+                        <small>Minutos</small>
+                    </div>
+                    <div class="caja-tiempo">
+                        <span id="ca-segundos">00</span>
+                        <small>Segundos</small>
+                    </div>
+                </div>
+                <p id="mensaje-encuentro" class="mensaje-encuentro" style="display: none;">
+                    💖 ¡Por fin ha llegado el día! Hoy nos vemos 💖
+                </p>
+            </div>
         </div>
     </section>
 
@@ -106,9 +131,15 @@
 
             <!-- Formulario para escribir un nuevo comentario -->
             <div class="form-nuevo-comentario">
-                <textarea id="texto-comentario" placeholder="Escribe tu opinión o lo que has sentido al leerla..."
-                    required></textarea>
-                <button onclick="enviarComentario()" id="btn-enviar-comentario">Publicar comentario ❤️</button>
+                <div class="selector-remitente">
+                    <span>¿Quién escribe?</span>
+                    <select id="autor-comentario">
+                        <option value="Laura">🌸 Laura</option>
+                        <option value="David">💙 David</option>
+                    </select>
+                </div>
+                <textarea id="texto-comentario" placeholder="Escribe tu mensaje aquí... (puedes usar párrafos y emojis ❤️)" required></textarea>
+                <button onclick="enviarComentario()" id="btn-enviar-comentario">Enviar mensaje 💌</button>
                 <p id="estado-envio" style="display:none; color: #5b3e2b; margin-top: 10px; font-weight: bold;"></p>
             </div>
         </div>
